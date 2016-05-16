@@ -1,0 +1,108 @@
+@CHARSET "UTF-8";
+
+@import url('flipbutton.css');
+
+.container {
+    display:table;
+    width:100%;
+}
+
+.table-row {
+    display:table-row;
+}
+
+.thcell, .table-header-cell {
+    display     : table-cell;
+    font-family : arial, helvetica, sans-serif;
+    font-size   : 12pt;
+    font-weight : bold;
+    padding-top : 5px;
+    padding-bottom : 5px;
+    padding-left : 8px;
+    padding-right : 8px;
+}
+
+.table-cell {
+    display     : table-cell;
+    font-family : arial, helvetica, sans-serif;
+    font-size   : 12pt;
+    padding: 5px;
+    border: 1px solid lightblue;
+    border-collapse: collapse;
+}
+.table-cell-odd {
+    display     : table-cell;
+    font-family : arial, helvetica, sans-serif;
+    font-size   : 12pt;
+    background-color: #fff;
+    color:black;
+    padding: 5px;
+    border: 1px solid lightblue;
+    border-collapse: collapse;
+}
+
+.table-cell-even {
+    display     : table-cell;
+    font-family : arial, helvetica, sans-serif;
+    font-size   : 12pt;
+    background-color: #cecece;
+    color:black;
+    padding: 5px;
+    border: 1px solid lightblue;
+    border-collapse: collapse;
+}
+.table    { display:table; }
+.table100 { display:table;width:100%!important; }
+.table50  { display:table;width:50%; }
+.table25  { display:table;width:25%; }
+.trow     { display:table-row; }
+.trow100  { display:table-row;width:100%; }
+.tcell    { display:table-cell; }
+.tcell100 { display:table-cell;width:100%; }
+.tcell50  { display:table-cell;width:50%; }
+.tcell33  { display:table-cell;width:33%; }
+.tcell25  { display:table-cell;width:25%; }
+.tcell10  { display:table-cell;width:10%; }
+.tcell15  { display:table-cell;width:15%; }
+.tcellH40 { display:table-cell;height:40px;vertical-align:middle;text-align:center; }
+
+.centered {
+    width:100%!important;
+    text-align:center;
+}
+
+/**
+ override title-bar from jquery-ui
+ */
+.ui-dialog-titlebar {
+    background:transparent;
+    border: 1px solid lightgrey;
+}
+
+.f12b, .f12 {
+    font-family: Arial, helvetica, Sans-Serif;
+    font-size: 12pt;
+}
+.f12b {
+    font-weight:bold;
+}
+
+.h40 {
+    height:40px;
+    vertical-align:middle;
+}
+
+.optionentry {
+    border:1px solid lightgrey;
+    padding-top: 12px;
+    padding-left: 10px;
+    height:30px;
+}
+
+.optionentry:hover {
+    border:1px solid white;
+    background-color: lightgrey;
+    padding-top: 12px;
+    padding-left: 10px;
+    height:30px;
+}

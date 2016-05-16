@@ -1,0 +1,14 @@
+[system]
+auth = true
+authfunc = Authenticate
+repository = http://piwigon.no-ip.org/service/ptfw/server.php
+username = piwi.gon
+password = M!g6z4Es
+
+[modules]
+auth[0] = true
+authfunc[0] = Authenticate
+modrepo[0] = http://piwigon.no-ip.org/service/ptfw/server.php
+username[0] = piwi.gon
+password[0] = M!g6z4Es
+reponame[0] = Standard

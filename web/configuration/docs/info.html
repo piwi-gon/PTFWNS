@@ -1,0 +1,30 @@
+<!--
+info.html
+
+displays only the info for this framework
+
+ -->
+ <script>
+ function openInfoDialog() {
+     if($('#releaseDialog').length == 0) {
+         $("body").append("<div id='releaseDialog'></div>");
+     }
+     $('#releaseDialog').hide();
+     $('#releaseDialog').dialog({ height: 400, width: 600, title: 'ReleaseInfo'});
+     $('#releaseDialog').load('docs/releaseInfo.html');
+     $('.ui-dialog-titlebar').hide();
+     $('#releaseDialog').show();
+ }
+ </script>
+ <div class="table" style="width:100%!important;">
+    <div class="trow">
+        <div class="tcell" style="text-align:center;width:100%!important;margin-right:auto;margin-left:auto;">
+            <p align="center">
+                <h3>Version V1.0.0</h3>
+                <button class="ui-state-default ui-corner-all" onClick="openInfoDialog();">ReleaseInfo</button><BR><br>
+                Welcome to PTFW - the framework which could help you in more than one matter.<br><br>
+                With this framework you can use built-in modules and/or external libraries which could be used as extension(s) which YOU want and/or need.
+            </p>
+        </div>
+    </div>
+</div>

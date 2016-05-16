@@ -1,0 +1,268 @@
+<?php
+
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+class cConfiguration extends BASE {
+///////////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////
+    //  public vars
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    //  public functions
+    ///////////////////////////////////////////////////////////////////////
+
+    public function cConfiguration() {
+        ;
+    }
+
+    public function baseRun() { return $this; }
+
+    public function loadConfiguration() {
+        // try to create a sqlite-db (if the sqlite-extension exists)
+        if(extension_loaded("sqlite")) {
+            $this->_getInitData();
+        } else if(extension_loaded("sqlite3")) {
+            $this->_getInitData3();
+        } else {
+            $this->_getInitDataByFile();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    //  private vars
+    ///////////////////////////////////////////////////////////////////////
+        private $_sqliteDB;
+        private $_installInfo;
+    ///////////////////////////////////////////////////////////////////////
+    //  private functions
+    ///////////////////////////////////////////////////////////////////////
+
+    /*
+     * 'public' private method _uncompress
+     * @param $moduleArchive - the archive to uncompress
+     * and install from
+     */
+    public function _uncompress($moduleArchive) {
+        echo "try to open '" . $moduleArchive . "'<br>";
+        if(substr($moduleArchive,-3) == "zip") {
+            $res = $this->_extractZIPArchive($moduleArchive);
+        } else if(substr($moduleArchive, -6)=="tar.gz") {
+            $res = $this->_extractTarGZArchive($moduleArchive);
+        }
+        if($res == true) {
+            $files = @scandir(INSTALL_WORKDIR);
+            for($count = 0; $count < count($files); $count++) {
+                if($files[$count]!="." && $files[$count] != "..") {
+                    if(is_dir(INSTALL_WORKDIR.$files[$count])) {
+                        $installFromDir = $files[$count];
+                    }
+                }
+            }
+            return $installFromDir;
+        } else {
+            die ("couldnt extract Archive");
+            exit;
+        }
+    }
+
+    private function _extractZIPArchive($moduleArchive) {
+        $zip = new ZipArchive();
+        $res = $zip->open($moduleArchive);
+        if($res == true) {
+            echo "try to extract to: '" . INSTALL_WORKDIR . "'<br>";
+            $zip->extractTo(INSTALL_WORKDIR."/");
+            $zip->close();
+            return true;
+        }
+        return false;
+    }
+
+    private function _extractTarGZArchive($moduleArchive) {
+        $zip = cBase::getTar();
+        $res = $zip->open($moduleArchive);
+//        if($res == true) {
+            echo "try to extract to: '" . INSTALL_WORKDIR . "'<br>";
+            $zip->extract(INSTALL_WORKDIR."/");
+            return true;
+//        }
+//        return false;
+    }
+
+    private function _initSQLite() {
+        try {
+            $this->_sqliteDB = sqlite_open(dirname(__FILE__)."/config.sqlite");
+        } catch (Exception $ex) {
+            die("DB-Conn could not be established");
+        }
+    }
+
+    private function _initSQLite3() {
+        try {
+            $this->_sqliteDB = new SQLite3(dirname(__FILE__)."/config.sqlite3");
+        } catch (Exception $ex) {
+            die("DB-Conn could not be established");
+        }
+    }
+
+    private function _getInitData() {
+        try {
+            $this->_sqliteDB = sqlite_open(dirname(__FILE__)."/config.sqlite");
+            if(!$this->_checkTables()) {
+                $this->_createTables();
+                $this->_insertInitData();
+                $this->_queryDBVars();
+            } else {
+                $this->_queryDBVars();
+            }
+        } catch (Exception $ex) {
+            die("DB couldnt be created");
+        }
+    }
+
+    private function _getInitData3() {
+        try {
+            $this->_sqliteDB = new SQLite3(dirname(__FILE__)."/config.sqlite3");
+            if(!$this->_checkTables3()) {
+                $this->_createTables();
+                $this->_insertInitData();
+                $this->_queryDBVars3();
+            } else {
+                $this->_queryDBVars3();
+            }
+        } catch (Exception $ex) {
+            die("DB couldnt be created");
+        }
+    }
+
+    private function _queryDBVars() {
+        $query  = "select * from t_environment";
+        $entry = sqlite_fetch_array($query, SQLITE_ASSOC);
+        if($entry['extensions']) { $this->_queryExtensions(); }
+        @define("DEBUG", ($entry['debug'] == "t" ? true : false));
+        @define("DEBUGLEVEL", $entry['debug_level']);
+    }
+
+    private function _queryDBVars3() {
+        $query  = "select * from t_environment";
+        $result = $this->_sqliteDB->query($query);
+        $resX   = $result->fetchArray(SQLITE3_ASSOC);
+        if($resX['extensions']) { $this->_queryExtensions3(); }
+        @define("DEBUG", ($resX['debug'] == "t" ? true : false));
+        @define("DEBUGLEVEL", $resX['debug_level']);
+    }
+
+    private function _checkIfTableExists($tableName) {
+        $select = "SELECT name FROM sqlite_master WHERE type='table' AND name='" . $tableName . "'";
+        if(extension_loaded("sqlite")) {
+            while($entry = sqlite_fetch_array($query, SQLITE_ASSOC)) {
+                $name = $entry['name'];
+            }
+        } else if(extension_loaded("sqlite3")) {
+            $result = @$this->_sqliteDB->query($query);
+            if($result == null) { return false; }
+            $resX   = $result->fetchArray(SQLITE3_ASSOC);
+            $name = $resX['name'];
+        }
+        return ($name != "") ? true : false;
+    }
+
+    private function _checkTables() {
+        $query  = "select version from t_version";
+        while($entry = sqlite_fetch_array($query, SQLITE_ASSOC)) { $version = $entry['version']; }
+        if($version != "") { return $this->_checkIfTableExists("t_version"); }
+        return false;
+    }
+
+    private function _checkTables3() {
+        $query  = "select version from t_version";
+        $result = @$this->_sqliteDB->query($query);
+        if($result == null) { return false; }
+        $resX   = $result->fetchArray(SQLITE3_ASSOC);
+        if($resX['version'] == "") { return $this->_checkIfTableExists("t_version"); }
+        return true;
+    }
+
+    private function _createTables() {
+        echo "creating tables" . (PHP_SAPI == "cli" ? "\n":"<br>");
+        $tbl['version'] = "create table t_version(version varchar(10) default '' not null);";
+        $tbl['mod']     = "create table t_module (module_id integer primary key autoincrement default 0 not null,\n".
+                          "name varchar(30) default '' not null,\n".
+                          "identifier varchar(30) default '' not null,\n".
+                          "path varchar(255) default '' not null,\n".
+                          "installed_version varchar(10) default '' not null);";
+        $tbl['ext']     = "create table t_extension (extension_id integer primary key autoincrement default 0 not null,\n".
+                          "name varchar(30) default '' not null,\n".
+                          "identifier varchar(30) default '' not null,\n".
+                          "path varchar(255) default '' not null,\n".
+                          "installed_version varchar(10) default '' not null);";
+        $tbl['env']     = "create table t_environment (environment_id integer primary key autoincrement default 0 not null,\n".
+                          "extensions boolean default true not null,\n".
+                          "debug boolean default false not null,\n".
+                          "debug_level integer default 1 not null,\n".
+                          "upload boolean default true not null,\n".
+                          "max_upload_size varchar(10) default '10MB' not null);\n";
+        $keys = array_keys($tbl);
+        for($count = 0; $count < count($keys); $count++) {
+            $query = $tbl[$keys[$count]];
+            $this->deb($insert, "SQL");
+            $result = $this->_sqliteDB->query($query);
+        }
+    }
+
+    private function _insertInitData() {
+        $insert = "insert into t_version (version) VALUES('V1.0.0');";
+        $this->deb($insert, "SQL");
+        $this->_sqliteDB->query($insert);
+        // sets the environment-vars
+        $envIns = "insert into t_environment (extensions, debug, debug_level, upload, max_upload_size) ".
+                  "VALUES('t', 't', '2', 't', '10MB')";
+        $this->deb($envIns, "SQL");
+        @define("DEBUG", true);
+        @define("DEBUGLEVEL", 2);
+        $this->_sqliteDB->query($envIns);
+        // cJQuery  = jquery/cJQuery.inc.php
+        // cJQueryUI= jqueryui/cJQueryUI.inc.php
+        $jqIns1 = "insert into t_extension (name, identifier, path, installed_version) ".
+                  "VALUES('cJQuery', 'cJQuery', 'jquery/cJQuery.inc.php', 'v1.9.1')";
+        $this->deb($jqIns1, "SQL");
+        $this->_sqliteDB->query($jqIns1);
+        $jqIns2 = "insert into t_extension (name, identifier, path, installed_version) ".
+                  "VALUES('cJQueryUI', 'cJQueryUI', 'jqueryui/cJQueryUI.inc.php', 'v1.10.0')";
+        $this->deb($jqIns2, "SQL");
+        $this->_sqliteDB->query($jqIns2);
+    }
+
+    private function _queryExtensions() {
+        if(isset($_SESSION['_EXT'])) { unset($_SESSION['_EXT']); }
+        $query  = "select * from t_extension order by name";
+        while($entry = sqlite_fetch_array($query, SQLITE_ASSOC)) {
+            if(file_exists(dirname(__FILE__) . "/../../external/" . $entry['path'])) {
+                $_SESSION['_EXT'][$entry['identifier']] = dirname(__FILE__) . "/../../external/" . $entry['path'];
+            }
+        }
+    }
+
+    private function _queryExtensions3() {
+        if(isset($_SESSION['_EXT'])) { unset($_SESSION['_EXT']); }
+        $query  = "select * from t_extension order by name";
+        $result = $this->_sqliteDB->query($query);
+        while($resX = $result->fetchArray(SQLITE3_ASSOC)) {
+            if(file_exists(dirname(__FILE__) . "/../../external/" . $resX['path'])) {
+                $_SESSION['_EXT'][$resX['identifier']] = dirname(__FILE__) . "/../../external/" . $resX['path'];
+            }
+        }
+    }
+
+    private function _getInitDataByFile() {
+        $ini = parse_ini_file(dirname(__FILE__)."/../../base.ini", true);
+        @define("DEBUG", (strtolower($ini['debug']['DEBUG'])=="true"?true:false));
+        @define("DEBUGLEVEL", $ini['debug']['DEBUGLEVEL']);
+        $_SESSION['_INI'] = $ini;
+        $this->_readAvailableExtensions();
+    }
+
+///////////////////////////////////////////////////////////////////////////////
+}
+///////////////////////////////////////////////////////////////////////////////
