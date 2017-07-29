@@ -51,20 +51,33 @@
     border: 1px solid lightblue;
     border-collapse: collapse;
 }
+
 .table    { display:table; }
 .table100 { display:table;width:100%!important; }
-.table50  { display:table;width:50%; }
-.table25  { display:table;width:25%; }
+.table99  { display:table; width:99%; margin: 0 auto; }
+.table50  { display:table; width:50%; margin: 0 auto; }
+.table25  { display:table; width:25%; margin: 0 auto; }
 .trow     { display:table-row; }
-.trow100  { display:table-row;width:100%; }
 .tcell    { display:table-cell; }
-.tcell100 { display:table-cell;width:100%; }
-.tcell50  { display:table-cell;width:50%; }
-.tcell33  { display:table-cell;width:33%; }
-.tcell25  { display:table-cell;width:25%; }
-.tcell10  { display:table-cell;width:10%; }
-.tcell15  { display:table-cell;width:15%; }
-.tcellH40 { display:table-cell;height:40px;vertical-align:middle;text-align:center; }
+.tcell100 { display:table-cell; width:100%; }
+.tcell10  { display:table-cell; width:10%; }
+.tcell15  { display:table-cell; width:15%; }
+.tcell20  { display:table-cell; width:20%; }
+.tcell25  { display:table-cell; width:25%; }
+.tcell30  { display:table-cell; width:30%; }
+.tcell33  { display:table-cell; width:33%; }
+.tcell40  { display:table-cell; width:40%; }
+.tcell50  { display:table-cell; width:50%; }
+.tcell60  { display:table-cell; width:60%; }
+.tcell70  { display:table-cell; width:70%; }
+.tcell75  { display:table-cell; width:75%; }
+.tcell80  { display:table-cell; width:80%; }
+.tcell90  { display:table-cell; width:90%; }
+.tcell99  { display:table-cell; width:99%; margin:0 auto; }
+
+.h40 {
+    vertical-align:middle;
+}
 
 .centered {
     width:100%!important;
@@ -105,4 +118,78 @@
     padding-top: 12px;
     padding-left: 10px;
     height:30px;
+}
+
+button {
+    border-top:1px solid lightgrey;
+    border-left:1px solid lightgrey;
+    border-bottom:1px solid grey;
+    border-right:1px solid grey;
+    border-radius: 4px;
+    background-color:#ddd;
+    background: linear-gradient(#eee, #ddd);
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-left: 17px;
+    margin-right: 17px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding-top: 0;
+    padding-bottom: 0;
+    width:120px;
+    height:40px;
+}
+
+button:active:enabled, .defaultButton:focus:enabled {
+    background: linear-gradient(#ddd, #ddd);
+    border-top:1px solid lightgrey;
+    border-left:1px solid lightgrey;
+    border-bottom:1px solid lightgreygrey;
+    border-right:1px solid lightgreygrey;
+}
+
+button:hover:enabled {
+    background: linear-gradient(#fefefe, #eee);
+}
+
+button:disabled {
+    opacity: 0.5;
+}
+
+.defaultButton {
+    line-height:12pt;
+    width:100px;
+    height:46px;
+}
+
+.smallButton {
+    line-height:12pt;
+    width:36px;
+    height:36px;
+}
+
+.lalign {
+    text-align:left;
+    padding-left:5px;
+}
+
+.ralign {
+    text-align:right;
+    padding-right:5px;
+}
+
+.calign {
+    text-align:center;
+}
+
+.vtop {
+    vertical-align:top;
+}
+
+.vmiddle {
+    vertical-align:middle;
+}
+
+.vbottom {
+    vertical-align:bottom;
 }

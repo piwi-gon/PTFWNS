@@ -32,7 +32,7 @@ class cConfiguration extends \PTFW\BASE {
 
     public function getPackageName($extensionId) {
         $this->addDBVars();
-        cSQL::makeNewConn("ptfw_config");
+        \PTFW\Base\Config\SQL\cSQLite::makeNewConn("ptfw_config");
         $select = "select name from t_extension ".
                   "where extension_id = '" . $extensionId . "'";
         $this->getDebug()->deb(basename(__FILE__) . ":" . "SQL: " . $select, "SQL");
@@ -101,9 +101,11 @@ class cConfiguration extends \PTFW\BASE {
         }
         $cfg->loadFurtherConfiguration();
         $this->getDebug()->deb("Current Extensions:");
-        $extKeys = array_keys($_SESSION['_EXT']);
-        for($count = 0; $count < count($extKeys); $count++) {
-            $this->getDebug()->deb($extKeys[$count]);
+        if(count($_SESSION['_EXT'])>0) {
+            $extKeys = array_keys($_SESSION['_EXT']);
+            for($count = 0; $count < count($extKeys); $count++) {
+                $this->getDebug()->deb($extKeys[$count]);
+            }
         }
     }
 
@@ -167,7 +169,7 @@ class cConfiguration extends \PTFW\BASE {
     }
 
     private function _extractZIPArchive($moduleArchive) {
-        $zip = new ZipArchive();
+        $zip = new \ZipArchive();
         $res = $zip->open($moduleArchive);
         if($res == true) {
             echo "try to extract to: '" . INSTALL_WORKDIR . "'<br>";
@@ -179,7 +181,7 @@ class cConfiguration extends \PTFW\BASE {
     }
 
     private function _extractTarGZArchive($moduleArchive) {
-        $zip = cBase::getTar();
+        $zip = \PTFW\cBase::getTar();
         $res = $zip->open($moduleArchive);
         echo "try to extract to: '" . INSTALL_WORKDIR . "'<br>";
         $zip->extract(INSTALL_WORKDIR."/");

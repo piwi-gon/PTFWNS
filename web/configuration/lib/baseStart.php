@@ -13,10 +13,15 @@
  */
 
 // start a session
+if(isset($_COOKIE['PHPSESSID'])) {
+    session_id($_COOKIE['PHPSESSID']);
+}
+session_set_cookie_params(180); // 3 minutes
 session_start();
+@define("SID",  session_name()."=".session_id());
 
-// get the location of frameweork
-$shareDir = "/usr/share/pear/ptfw/";
+// get the location of framework
+$shareDir = "/usr/share/pear/ptfwNS/";
 define("BASE_DIR", $shareDir);
 
 // ste the include-path to it

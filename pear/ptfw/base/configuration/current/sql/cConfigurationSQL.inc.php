@@ -1,6 +1,17 @@
 <?php
+/*
+ * cConfigurationSQL.inc.php
+ *
+ * author: klaus
+ *
+ * created: 28.07.2017
+ * changed: 28.07.2017
+ *
+ */
 
-class cConfigurationSQL extends cConfiguration {
+namespace PTFW\Base\Config\SQL;
+
+class cConfigurationSQL extends \PTFW\Base\Config\cConfiguration {
 
     public function __construct() {
         /**
@@ -23,7 +34,7 @@ class cConfigurationSQL extends cConfiguration {
 
     private function _getInitDataSQL() {
         $this->addDBVars();
-        cSQL::makeNewConn("ptfw_config");
+        cSQLite::makeNewConn("ptfw_config");
         if(!$this->_checkTablesSQL()) {
             $this->_createTablesSQL();
             $this->_insertInitDataSQL();

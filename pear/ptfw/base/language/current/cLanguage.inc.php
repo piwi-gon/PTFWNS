@@ -12,9 +12,9 @@
  *
  */
 
-if(!class_exists(cLanguage)) {
-
 namespace PTFW\Base\Lang;
+
+if(!class_exists(cLanguage)) {
 
 class cLanguage {
 

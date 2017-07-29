@@ -43,7 +43,7 @@ $repo = $base->getUpdateChecker()->querySystemRepository();
 var systemEditable = false;
 $(document).ready(function() {
     $('#radio2').buttonset();
-    $('#repositorytabsId').tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+    $('#repositorytabsId').tabs();
     $( "#repositorytabsId li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
     $('#cancelSystemRepoButtonId').hide();
 });
@@ -146,7 +146,7 @@ function toggleSystemEditing(flag, sessId) {
 }
 function addRepository(sessId) {
     $('#dialog').hide();
-    $('#dialog').dialog({ height: 400, width: 900});
+    $('#dialog').dialog({ height: 'auto', width: 900});
     $('#dialog').dialog("widget").find(".ui-dialog-titlebar").css({
         "float": "right",
         padding: 0,
@@ -201,11 +201,11 @@ function generateModuleIndex(sessionId) {
     });
 }
 </script>
-<div class="table" style="width:100%!important;margin:0 auto;">
+<div class="table99">
     <div class="trow">
-        <div class="tcell100" style="vertical-align:top;">
-            <div class="table100">
-                <div class="trow100">
+        <div class="tcell99 vtop">
+            <div class="table99">
+                <div class="trow">
                     <div class="tcell25 ui-widget-content" style="height:40px;vertical-align:middle;">DEBUG</div>
                     <div style="height:40px;text-align:center;vertical-align:middle;" class="tcell25 ui-widget-content">
                         <div class="onoffswitch" style="margin-left:auto;margin-right:auto;">
@@ -220,7 +220,7 @@ function generateModuleIndex(sessionId) {
                         <input type="text" name="DEBUGLEVEL" id="DEBUGLEVELID" size=2 maxlength=2 width="20px;" value="<?php echo intval($debugLevel); ?>"<?php echo ($debugKO ? " disabled=\"disabled\"" : "") ?>>
                     </div>
                 </div>
-                <div class="trow100">
+                <div class="trow">
                     <div class="tcell25 ui-widget-content" style="height:40px;vertical-align:middle;">UPLOAD</div>
                     <div style="height:40px;text-align:center;vertical-align:middle;" class="tcell25 ui-widget-content">
                         <div class="onoffswitch" style="margin-left:auto;margin-right:auto;">
@@ -236,35 +236,19 @@ function generateModuleIndex(sessionId) {
                     </div>
                 </div>
             </div>
-            <div class="table100">
-                <div class="trow100">
-                    <div class="tcell50" style="text-align:right;">
-                        <div class="table100">
-                            <div class="trow100">
-                                <div class="tcell50" style="text-align:center;">
-                                    <div id="resultUpdateEnvironmentId"></div>
-                                </div>
-                            </div>
-                        </div>
+            <div class="table99">
+                <div class="trow">
+                    <div class="tcell25 calign">
+                        <div id="resultUpdateEnvironmentId"></div>
                     </div>
-                    <div class="tcell50" style="text-align:right;">
-                        <div class="ui-button ui-state-default ui-corner-all" style="padding:10px;" onclick="modifyEnvironment();">Aktualisieren</div>
+                    <div class="tcell25 ralign">
+                        <button onclick="modifyEnvironment();">Aktualisieren</button>
                     </div>
-                </div>
-            </div>
-            <div class="table100">
-                <div class="trow100">
-                    <div class="tcell50" style="text-align:right;">
-                        <div class="table100">
-                            <div class="trow100">
-                                <div class="tcell50" style="text-align:center;">
-                                    <div id="resultGenerateModuleIndexId"></div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="tcell25 calign">
+                        <div id="resultGenerateModuleIndexId"></div>
                     </div>
-                    <div class="tcell50" style="text-align:right;">
-                        <div class="ui-button ui-state-default ui-corner-all" style="padding:10px;" onclick="generateModuleIndex('<?php echo SID; ?>');">(Re-)Generate Module-Index</div>
+                    <div class="tcell25 ralign">
+                        <button onclick="generateModuleIndex('<?php echo SID; ?>');" style="width:auto;">(Re-)Generate Module-Index</button>
                     </div>
                 </div>
             </div>
@@ -272,12 +256,10 @@ function generateModuleIndex(sessionId) {
     </div>
 </div>
 <div class="table" style="width:100%!important;margin-left:auto;margin-right:auto;">
-    <div class="trow100">
-        <div class="tcell100 tcellH40 ui-widget-header f12b" style="vertical-align:top;width:100%;">
-            Repositories
-        </div>
+    <div class="trow">
+        <div class="tcell100 h40 ui-widget-header f12b calign">Available Repositories</div>
     </div>
-   <div class="trow100">
+   <div class="trow">
         <div class="tcell100" style="vertical-align:top;width:90%;">
             <div id="repositorytabsId">
                 <ul>
@@ -290,47 +272,44 @@ function generateModuleIndex(sessionId) {
                             <div class="tcell" style="vertical-align:top;width:80%;">
                                 <div class="table" style="width:100%">
                                     <div class="trow">
-                                        <div class="tcellH40 ui-state-default ui-corner-tl">Option</div>
-                                        <div class="tcellH40 ui-state-default ui-corner-tr">
-                                            <div class="table100">
+                                        <div class="tcell50 h40 ui-state-default ui-corner-tl lalign">Main-System-Repository</div>
+                                        <div class="tcell50 h40 ui-state-default ui-corner-tr">
+                                            <div class="table">
                                                 <div class="trow">
-                                                    <div class="tcellH40 ui-state-default" style="vertical-align:middle;text-align:center;">
-                                                        Value
-                                                    </div>
-                                                    <div class="tcellH40 ui-state-default" style="vertical-align:middle;width:254px;">
-                                                        <div class="table">
-                                                            <div class="trow">
-                                                                <div class="tcell">
-                                                                    <button class="ui-state-default ui-corner-all ui-state-disabled" disabled="disabled" id="saveSystemRepoButtonId" onclick="toggleSystemEditing(false, '<?php echo SID; ?>');" style="width:120px;"><img src="images/16x16/disk.png"><br>Save</button>
-                                                                    <button class="ui-state-default ui-corner-all" id="modSystemRepoButtonId" onclick="toggleSystemEditing(true, '<?php echo SID; ?>');" style="width:120px;"><img src="images/16x16/wrench.png"><br>Modify</button>
-                                                                    <button class="ui-state-default ui-corner-all" id="cancelSystemRepoButtonId" onclick="toggleSystemEditing(false, '<?php echo SID; ?>');" style="width:120px;"><img src="images/16x16/cancel.png"><br>Cancel</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                    <div class="tcell">
+                                                        <button class="defaultButton" disabled="disabled" id="saveSystemRepoButtonId" onclick="toggleSystemEditing(false, '<?php echo SID; ?>');">
+                                                            <img src="images/16x16/disk.png"><br>Save
+                                                        </button>
+                                                        <button class="defaultButton" id="modSystemRepoButtonId" onclick="toggleSystemEditing(true, '<?php echo SID; ?>');">
+                                                            <img src="images/16x16/wrench.png"><br>Modify
+                                                        </button>
+                                                        <button class="defaultButton" id="cancelSystemRepoButtonId" onclick="toggleSystemEditing(false, '<?php echo SID; ?>');">
+                                                            <img src="images/16x16/cancel.png"><br>Cancel
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="trow">
-                                        <div class="tcellH40 ui-widget-content" style="width:25%;">URL:</div>
-                                        <div class="tcellH40 ui-widget-content" style="width:75%;"><div id="systemRepoURLId"><?php echo $repo['system']['repository']; ?></div></div>
+                                        <div class="tcell25 h40 ui-widget-content lalign" style="width:25%;">URL:</div>
+                                        <div class="tcell75 h40 ui-widget-content lalign" style="width:75%;"><div id="systemRepoURLId"><?php echo $repo['system']['repository']; ?></div></div>
                                     </div>
                                     <div class="trow">
-                                        <div class="tcellH40 ui-widget-content" style="width:25%;">Auth:</div>
-                                        <div class="tcellH40 ui-widget-content" style="width:75%;"><div id="systemRepoIsAuthId"><?php echo $repo['system']['auth'] == "true" ? "Yes" : "No"; ?></div></div>
+                                        <div class="tcell25 h40 ui-widget-content lalign" style="width:25%;">Auth:</div>
+                                        <div class="tcell75 h40 ui-widget-content lalign" style="width:75%;"><div id="systemRepoIsAuthId"><?php echo $repo['system']['auth'] == "true" ? "Yes" : "No"; ?></div></div>
                                     </div>
                                     <div class="trow">
-                                        <div class="tcellH40 ui-widget-content" style="width:25%;">Authfunc:</div>
-                                        <div class="tcellH40 ui-widget-content" style="width:75%;"><div id="systemRepoAuthFuncId"><?php echo $repo['system']['authfunc']; ?></div></div>
+                                        <div class="tcell25 h40 ui-widget-content lalign" style="width:25%;">Authfunc:</div>
+                                        <div class="tcell75 h40 ui-widget-content lalign" style="width:75%;"><div id="systemRepoAuthFuncId"><?php echo $repo['system']['authfunc']; ?></div></div>
                                     </div>
                                     <div class="trow">
-                                        <div class="tcellH40 ui-widget-content" style="width:25%;">User:</div>
-                                        <div class="tcellH40 ui-widget-content" style="width:75%;"><div id="systemRepoUserId"><?php echo $repo['system']['username']; ?></div></div>
+                                        <div class="tcell25 h40 ui-widget-content lalign" style="width:25%;">User:</div>
+                                        <div class="tcell75 h40 ui-widget-content lalign" style="width:75%;"><div id="systemRepoUserId"><?php echo $repo['system']['username']; ?></div></div>
                                     </div>
                                     <div class="trow">
-                                        <div class="tcellH40 ui-widget-content" style="width:25%;">Pass:</div>
-                                        <div class="tcellH40 ui-widget-content" style="width:75%;"><div id="systemRepoPassId"><?php echo $repo['system']['password'] != "" ? "is set" : "is not set"; ?></div></div>
+                                        <div class="tcell25 h40 ui-widget-content lalign" style="width:25%;">Pass:</div>
+                                        <div class="tcell75 h40 ui-widget-content lalign" style="width:75%;"><div id="systemRepoPassId"><?php echo $repo['system']['password'] != "" ? "is set" : "is not set"; ?></div></div>
                                     </div>
                                 </div>
                             </div>
@@ -340,24 +319,28 @@ function generateModuleIndex(sessionId) {
                 <div id="moduleRepositoryId">
                     <div class="table100">
                         <div class="trow">
-                            <div class="tcell" style="width: 25%;vertical-align:top;">
-                               <div class="table ui-widget-content ui-corner-top" style="width:100%;">
+                            <div class="tcell25 vtop">
+                               <div class="table100 ui-widget-content ui-corner-top">
                                     <div class="trow">
                                         <div class="tcell">
                                             <div class="table">
                                                 <div class="trow">
                                                     <div class="tcell">
-                                                        <button onClick="addRepository('<?php echo SID; ?>');">&nbsp;<span style="font-weight:bold;">+</span>&nbsp;</button>
+                                                        <button onClick="addRepository('<?php echo SID; ?>');" class="smallButton">
+                                                            &nbsp;<span style="font-weight:bold;">+</span>&nbsp;
+                                                        </button>
                                                     </div>
                                                     <div class="tcell">
-                                                        <button onClick="removeRepository('<?php echo SID; ?>');" id="removeRepositoryButtonId" disabled="disabled">&nbsp;<span style="font-weight:bold;">-</span>&nbsp;</button>
+                                                        <button onClick="removeRepository('<?php echo SID; ?>');" id="removeRepositoryButtonId" disabled="disabled" class="smallButton">
+                                                            &nbsp;<span style="font-weight:bold;">-</span>&nbsp;
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                 <select name="selectedModuleRepository" id="selectedModuleRepositoryId" onClick="showModRepoDetails('<?php echo SID; ?>');" style="width:210px;height:208px;" size="10">
+                                 <select name="selectedModuleRepository" id="selectedModuleRepositoryId" onClick="showModRepoDetails('<?php echo SID; ?>');" style="width:99%;margin:0 auto;height:208px;" size="10">
 <?php
 for($count = 0; $count < count($repo['modules']['modrepo']); $count++) {
 ?>
@@ -368,7 +351,7 @@ for($count = 0; $count < count($repo['modules']['modrepo']); $count++) {
                                 </select>
                             </div>
                             <div class="tcell" style="width: 75%;vertical-align:top;text-align:left;">
-                                <div id="repoContentId" style="width:99%;border:1px solid lightgrey;height:260px;overflow:auto;"></div>
+                                <div id="repoContentId" style="width:99%;border:1px solid lightgrey;height:280px;overflow:auto;"></div>
                             </div>
                         </div>
                     </div>

@@ -20,8 +20,6 @@
  *          to call the class to ues which is integrated in extensions:
  *          i.e.: $base->getExtension('nusoap'); to get external library nusoap
  *
- *          this is the namespaced version
- *
  */
 
 namespace PTFW;
@@ -155,6 +153,16 @@ class cBase {
         return $_updateCheckerObject;
     }
 
+    /**
+     * here is where the magic starts - the __call-method of php is widely used
+     * to call a class
+     * 
+     * the method is the class-name and the args for this class (if necessary)
+     * 
+     * @param string $method
+     * @param mixed $args
+     * @return object|NULL
+     */
     public function __call($method, $args) {
         $className = str_replace("get", "c", $method);
         /**
@@ -178,7 +186,6 @@ class cBase {
             if($className != null) {
                 require_once($this->_includePath . DS . $className.".inc.php");
                 $content = file_get_contents($this->_includePath . DS . $className.".inc.php");
-                // $nameSpace = $this->_byRegexp($content);
                 $nameSpace = $this->_byToken($content);
                 $class = $nameSpace."\\".$className;
                 $obj = new $class();
@@ -223,12 +230,31 @@ class cBase {
         $ext = $_SESSION['_EXT'][$extName]['filename'];
         if(!$_SESSION['_EXT'][$extName]['active']) {
             $this->_DEBUG->deb(basename(__FILE__) . ":" . "required extension '" . $extName . "' not present or deactivated ");
-            echo(basename(__FILE__) . ":" . "required extension '" . $extName . "' not present or deactivated ");
+            echo(basename(__FILE__) . ":" . "required extension '" . $extName . "' not present or deactivated\n");
         } else if(file_exists($ext)) {
             $this->_DEBUG->deb(basename(__FILE__) . ":" . "required extension '" . $extName . "' found!");
             include($ext);
-            $obj = new $extName();
-            if($obj != null) { return $obj; }
+            if($_SESSION['_EXT'][$extName]['additional']=="false") {
+                /**
+                 * now lets check if there is any namespace in
+                 * selected extension
+                 */
+                /*
+                if(class_exists($etxName)) {
+                    $obj = new $extName();
+                } else {
+                */
+                    $content = file_get_contents($ext);
+                    $className = str_replace(".php", "", basename($ext));
+                    $nameSpace = $this->_byToken($content);
+                    if($nameSpace != "") {
+                        $class = $nameSpace."\\".$className;
+                    }
+    //                echo "determined className: '" . $class . "'\n";
+                    $obj = new $class();
+                // }
+                if($obj != null) { return $obj; }
+            }
         } else {
             $this->_DEBUG->deb(basename(__FILE__) . ":" . "required extension '" . $extName . "' not found (path: " . $ext .")");
             echo(basename(__FILE__) . ":" . "required extension '" . $extName . "' not found (path: " . $ext .")");
@@ -264,20 +290,36 @@ class cBase {
         }
     }
 
+    /**
+     * function to determine the class to be included
+     * it could be cClassExample or ClassExample
+     * the filename must be similar to it (i.E.: cClassExample.inc.php or ClassExample.inc.php)
+     *
+     * it could NOT be a trait - doesnt work unless you use it in a another class
+     *
+     * @param string $method        the Method which is called and what the ClassName is
+     * @param string $currentDir    the Directory where the class are locatet in
+     * @return string               the ClassName
+     */
     private function _queryBaseClass($method, $currentDir="") {
-        $className = str_replace("get", "c", $method);
+        $className  = str_replace("get", "c", $method);
+        $className2 = str_replace("get", "", $method);
         if($currentDir == "") { $currentDir = dirname(__FILE__) . DS . "modules"; }
         $this->getDebug()->deb(basename(__FILE__) . ":" . $method.": ".$currentDir, "MSG");
         $content = file_get_contents(dirname(__FILE__) . DS . "index" . DS . "modules.idx");
         $lines = explode("\n", $content);
         for($count = 0; $count < count($lines); $count++) {
             if(substr($lines[$count], 0, 1) != ";" && strlen(trim($lines[$count])) > 0) {
-                $tokens=explode("=", $lines[$count]);
+                $tokens = explode("=", $lines[$count]);
                 $clsTokens = explode("|", trim($tokens[1]));
                 $this->getDebug()->deb("classPath: '" . dirname($clsTokens[0]) . " => file " . basename($clsTokens[0]));
                 if(str_replace(".inc.php", "", basename($clsTokens[0])) == $className) {
                     $this->_includePath = $currentDir . DS . dirname($clsTokens[0]);
                     $retClass = $className;
+                    $count = count($lines);
+                } else if(str_replace(".inc.php", "", basename($clsTokens[0])) == $className2) {
+                    $this->_includePath = $currentDir . DS . dirname($clsTokens[0]);
+                    $retClass = $className2;
                     $count = count($lines);
                 }
             }
@@ -308,6 +350,13 @@ class cBase {
                 $_SESSION['_EXT'][$keys[$count]] = dirname(__FILE__) . "/external/" . $ext;
             }
         }
+    }
+
+    private function _byRegexp($src) {
+        if (preg_match('#^namespace\s+(.+?);$#sm', $src, $m)) {
+            return $m[1];
+        }
+        return null;
     }
 
     private function _byToken ($src) {

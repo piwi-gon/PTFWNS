@@ -97,7 +97,7 @@ class cModuleClass {
         $this->_createSoapClient();
         $this->_soapAction = "getModuleVersion";
         if(isset($this->_soapParams)) { unset($this->_soapParams); }
-        $this->_soapParams[] = new SoapParam($moduleName, "moduleName");
+        $this->_soapParams[] = new \SoapParam($moduleName, "moduleName");
         $this->_doCall();
         error_log("Version given: " . $moduleVersion . " <=> Module on Repo: " . $this->_soapResult . "\n", 3, "/tmp/soapRequests.log");
         $this->_actualRepoModuleVersion = $this->_soapResult;
@@ -114,7 +114,7 @@ class cModuleClass {
         $this->_createSoapClient();
         $this->_soapAction = "getModuleById";
         if(isset($this->_soapParams)) { unset($this->_soapParams); }
-        $this->_soapParams[] = new SoapParam($moduleId, "moduleId");
+        $this->_soapParams[] = new \SoapParam($moduleId, "moduleId");
         $this->_doCall();
         return $this->_soapResult;
     }
@@ -124,7 +124,7 @@ class cModuleClass {
         $this->_createSoapClient();
         $this->_soapAction = "getModule";
         if(isset($this->_soapParams)) { unset($this->_soapParams); }
-        $this->_soapParams[] = new SoapParam($moduleName, "moduleName");
+        $this->_soapParams[] = new \SoapParam($moduleName, "moduleName");
         $this->_doCall();
         return $this->_soapResult;
     }
@@ -134,7 +134,7 @@ class cModuleClass {
         $this->_createSoapClient();
         $this->_soapAction = "getModuleDetails";
         if(isset($this->_soapParams)) { unset($this->_soapParams); }
-        $this->_soapParams[] = new SoapParam($moduleId, "moduleId");
+        $this->_soapParams[] = new \SoapParam($moduleId, "moduleId");
         $this->_doCall();
         return $this->_soapResult;
     }
@@ -284,7 +284,7 @@ class cModuleClass {
                         "uri" => "urn:testapi",
                         "trace" => 1); // ,
                         // "exceptions" => 0);
-        $this->_soapClient = new SoapClient($WSDL, $optionArray);
+        $this->_soapClient = new \SoapClient($WSDL, $optionArray);
     }
 
     private function _createModuleIndex() {

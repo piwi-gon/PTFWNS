@@ -78,7 +78,7 @@ class cExtensionClass {
                  */
                 if($new) { $this->_buildExtensionIndexHeader($fp); }
                 error_log("adding '".$this->_installInfo['name']."'\n", 3, "/tmp/install.log");
-                fwrite($fp, sprintf("%-20s", $this->_installInfo['ident']) . "= " . $this->_installInfo['path'] . DS . $this->_installInfo['name'] . "|" . $this->_installInfo['version'] . "|true\n");
+                fwrite($fp, sprintf("%-20s", $this->_installInfo['ident']) . "= " . $this->_installInfo['path'] . DS . $this->_installInfo['name'] . "|" . $this->_installInfo['version'] . "|true|".$this->_installInfo['onlyLoad']."\n");
             }
             fclose($fp);
         } else {
@@ -95,10 +95,10 @@ class cExtensionClass {
                 error_log("Checking '" . trim($this->_installInfo['name']) . "'", 3, "/tmp/install.log");
                 if(strtolower(trim($this->_extIndex[$count]['name'])) == strtolower(trim($this->_installInfo['name']))) {
                     error_log("updating '".$this->_installInfo['name']."'\n", 3, "/tmp/install.log");
-                    fwrite($fp, sprintf("%-20s", $this->_extIndex[$count]['ident']) . "= " . $this->_extIndex[$count]['path'] . DS . $this->_extIndex[$count]['name'] . "|" . $this->_installInfo['version'] . "|" . $this->_extIndex[$count]['active'] . "\n");
+                    fwrite($fp, sprintf("%-20s", $this->_extIndex[$count]['ident']) . "= " . $this->_extIndex[$count]['path'] . DS . $this->_extIndex[$count]['name'] . "|" . $this->_installInfo['version'] . "|" . $this->_extIndex[$count]['active'] . "|". $this->_extIndex[$count]['onlyLoad']."\n");
                 } else {
                     error_log("adding '".$this->_extIndex[$count]['name']."'\n", 3, "/tmp/install.log");
-                    fwrite($fp, sprintf("%-20s", $this->_extIndex[$count]['ident']) . "= " . $this->_extIndex[$count]['path'] . DS . $this->_extIndex[$count]['name'] . "|" . $this->_extIndex[$count]['version'] . "|" . $this->_extIndex[$count]['active'] . "\n");
+                    fwrite($fp, sprintf("%-20s", $this->_extIndex[$count]['ident']) . "= " . $this->_extIndex[$count]['path'] . DS . $this->_extIndex[$count]['name'] . "|" . $this->_extIndex[$count]['version'] . "|" . $this->_extIndex[$count]['active'] . "|". $this->_extIndex[$count]['onlyLoad']."\n");
                 }
             }
             fclose($fp);

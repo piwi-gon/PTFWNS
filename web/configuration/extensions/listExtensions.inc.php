@@ -21,9 +21,12 @@ $extKO      = (!$_SESSION['_ENV']['USE_EXTENSIONS'] ? " checked=\"checked\"" : "
 ?>
 <link rel="stylesheet" href="css/monthselector.css">
 <script src="lib/js/jquery.monthselector.widget.js"></script>
+<link rel="stylesheet" href="css/checkboxreplacement.css">
+<script src="lib/js/jquery.checkboxreplacement.widget.js"></script>
 <script>
 $(document).ready(function() {
     $('#radio3').buttonset();
+    $('input[type=checkbox]').each(function() { $(this).checkboxReplacementWidget(); });
 //    $('#monthId').monthSelectorWidget({backward: 7, forward: 5});
 });
 
@@ -38,17 +41,11 @@ function createInstallExtDialog(sessId) {
     .find(".ui-dialog-title").css({
         display: "none"
     }).end()
-    .find(".ui-dialog-titlebar-close").css({
-        display: "none"
-//         top: 0,
-//         right: 0,
-//         margin: 0,
-//         "z-index": 999
-    });
+    .find(".ui-dialog-titlebar-close").css({display: "none"});
     $('#dialog').dialog("widget").css({border: "2px solid #1c94c4" });
     $('#dialog').dialog("open");
     $('#dialog').load('extensions/addExtension.inc.php?' + sessId, function(){
-        $.getScript('lib/js/uploadExtension.js').fail('uploadExtension.js could not be loaded').success(function() {
+        $.getScript('lib/js/uploadExtension.js').fail('uploadExtension.js could not be loaded').done(function() {
             addExtensionUploadHandler('uploadExtensionContainerId', ['.gz', '.tgz', '.zip'], sessId);});
         });
 }
@@ -65,7 +62,7 @@ function toggleExtensionActivity(sessId, fieldId) {
 <div class="container" style="display:table;">
     <div class="table-row">
         <div class="table-header-cell ui-state-default ui-corner-top">
-            <button class="ui-widget-header ui-corner-all" style="padding:5px;" onClick="createInstallExtDialog('<?php echo "PHPSESSID=".session_id(); ?>');">
+            <button class="smallButton" onClick="createInstallExtDialog('<?php echo "PHPSESSID=".session_id(); ?>');">
                 <img src="images/16x16/page_white.png" border="0">
             </button>
         </div>
@@ -100,13 +97,14 @@ function toggleExtensionActivity(sessId, fieldId) {
 </div>
 <div class="container" style="display:table;">
     <div class="table-row">
-        <div class="table-header-cell ui-state-default" style="width:10%;">No</div>
-        <div class="table-header-cell ui-state-default" style="width:10%;">Ident</div>
-        <div class="table-header-cell ui-state-default" style="width:20%;">Filename</div>
-        <div class="table-header-cell ui-state-default" style="width:30%;">Path (relative to extension-install-path)</div>
-        <div class="table-header-cell ui-state-default" style="width:10%;">Version</div>
-        <div class="table-header-cell ui-state-default" style="width:15%;text-align:center;">Actions</div>
-        <div class="table-header-cell ui-state-default" style="width:5%;">Active</div>
+        <div class="table-header-cell h40 ui-widget-header" style="width:10%;">No</div>
+        <div class="table-header-cell h40 ui-widget-header" style="width:10%;">Ident</div>
+        <div class="table-header-cell h40 ui-widget-header" style="width:20%;">Filename</div>
+        <div class="table-header-cell h40 ui-widget-header" style="width:25%;">Path (relative to extension-install-path)</div>
+        <div class="table-header-cell h40 ui-widget-header" style="width:5%;">Only<br>Load</div>
+        <div class="table-header-cell h40 ui-widget-header" style="width:10%;">Version</div>
+        <div class="table-header-cell h40 ui-widget-header" style="width:15%;text-align:center;">Actions</div>
+        <div class="table-header-cell h40 ui-widget-header" style="width:5%;">Active</div>
     </div>
 <?php
 $extCount=0;
@@ -118,7 +116,10 @@ for($count = 0; $count < count($EXTENSIONS); $count++) {
         <div class="table-cell <?php echo $state; ?>" style="width:10%;"><?php echo sprintf("%03d", ($extCount)); ?></div>
         <div class="table-cell <?php echo $state; ?>" style="width:10%;"><?php echo trim($EXTENSIONS[$count]['ident']); ?></div>
         <div class="table-cell <?php echo $state; ?>" style="width:20%;"><?php echo $EXTENSIONS[$count]['name']; ?></div>
-        <div class="table-cell <?php echo $state; ?>" style="width:30%;"><?php echo $EXTENSIONS[$count]['path']; ?></div>
+        <div class="table-cell <?php echo $state; ?>" style="width:25%;"><?php echo $EXTENSIONS[$count]['path']; ?></div>
+        <div class="table-cell <?php echo $state; ?>" style="width:5%;">
+            <input type="checkbox" name="onlyLoad<?php echo trim($EXTENSIONS[$count]['ident']); ?>" id="onlyLoad<?php echo trim($EXTENSIONS[$count]['ident']); ?>Id" value="true"<?php echo ($EXTENSIONS[$count]['additional'] == "true" ? " checked=\"checked\"":""); ?>>
+        </div>
         <div class="table-cell <?php echo $state; ?>" style="width:10%;">
             <div class="table">
                 <div class="trow">
@@ -154,15 +155,16 @@ if($EXTENSIONS[$count]['additional'] != "") {
             </div>
         </div>
         <div class="actionList table-cell <?php echo $state; ?>" style="width:15%;vertical-align:middle;text-align:center;">
-            <div class="onoffswitch_small" style="margin-left:auto;margin-right:auto;">
+            <!-- <div class="onoffswitch_small" style="margin-left:auto;margin-right:auto;"> -->
                 <input onClick="toggleExtensionActivity('<?php echo SID; ?>',this.id);" type="checkbox" name="<?php echo trim($EXTENSIONS[$count]['ident']); ?>"
                        value="<?php echo trim($EXTENSIONS[$count]['ident']); ?>"
-                       class="onoffswitch_small-checkbox"
                        id="module<?php echo trim($EXTENSIONS[$count]['ident']); ?>Id" <?php echo ($EXTENSIONS[$count]['active']=="true" ? "checked" : ""); ?>>
+                <!--
                 <label class="onoffswitch_small-label" for="module<?php echo trim($EXTENSIONS[$count]['ident']); ?>Id">
                     <span class="onoffswitch_small-inner"></span>
                 </label>
             </div>
+            -->
         </div>
     </div>
 <?php
