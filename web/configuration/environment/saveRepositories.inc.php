@@ -18,6 +18,8 @@
 require_once(__DIR__."/../lib/baseStart.php");
 
 $repo = $base->getUpdateChecker()->querySystemRepository();
+print_r($_POST);
+print_r($_GET);
 if($_GET['deleteId'] == "") {
     if($_GET['isSystem']) {
         $repo['system']['auth']         = $_POST['systemRepoIsAuthValue'] != "" ? "true" : "false";

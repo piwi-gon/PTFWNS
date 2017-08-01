@@ -94,9 +94,33 @@ function toggleModuleActivity(sessId, fieldId) {
         success: function() {}
     });
 }
+
+function generateModuleIndex(sessionId) {
+    $('#resultGenerateModuleIndexId').html('generating Index');
+    $.ajax({
+        url: 'environment/generateModuleIndex.php?' + sessionId,
+        type: 'POST',
+        success: function(data) {
+            if(data == "success") {
+                $('#resultGenerateModuleIndexId').html('Index successfully generated');
+            }
+        }
+    });
+}
 </script>
-<div class="container" style="display:table;">
-    <div class="table-row">
+<div class="table100">
+    <div class="trow">
+        <div class="tcell25 lalign">
+            <button onclick="generateModuleIndex('<?php echo SID; ?>');" style="width:auto;">(Re-)Generate Module-Index</button>
+        </div>
+        <div class="tcell75 calign">
+            <div id="resultGenerateModuleIndexId"></div>
+        </div>
+
+    </div>
+</div>
+<div class="container table100">
+    <div class="trow">
         <div class="table-header-cell ui-state-default ui-corner-tl">
             <div class="table">
                 <div class="trow">

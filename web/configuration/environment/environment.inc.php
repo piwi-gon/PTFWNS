@@ -107,20 +107,22 @@ function toggleSystemEditing(flag, sessId) {
         var pass1Value       = $('#systemRepoPass1ValueId').val();
         var pass2Value       = $('#systemRepoPass2ValueId').val();
         if(pass1Value == pass2Value && flag) {
-            if(repoAuthIsAuth) {
-                if(pass1Value.length == 0) {
-                    alert('No Password given');
-                }
-                if(repoAuthAuthFunc.length == 0) {
-                    alert('No Name for the Authfunction given');
-                }
+            console.log("HIER");
+            if(repoAuthIsAuth && pass1Value.length == 0) {
+                alert('No Password given');
+            } else if(repoAuthIsAuth && repoAuthAuthFunc.length == 0) {
+                alert('No Name for the Authfunction given');
             } else {
-                var formData = $('input,checkbox,textarea,password').serialize();
+                var formData = $('input,textarea,select').serialize();
+                var baseURL = 'environment/saveRepositories.inc.php?<?php echo SID; ?>';
+                console.log(formData);
                 $.ajax({
-                    url: "environment/saveRepositories.inc.php?" + sessId + "&isSystem=true",
+                    url: baseURL + "&isSystem=true",
                     method: "POST",
                     data: formData,
-                    success: function(data) {}
+                    success: function(data) {
+                        alert("saved");
+                    }
                 });
             }
         } else if(!flag) {
@@ -147,17 +149,7 @@ function toggleSystemEditing(flag, sessId) {
 function addRepository(sessId) {
     $('#dialog').hide();
     $('#dialog').dialog({ height: 'auto', width: 900});
-    $('#dialog').dialog("widget").find(".ui-dialog-titlebar").css({
-        "float": "right",
-        padding: 0,
-        border: 0
-    })
-    .find(".ui-dialog-title").css({
-        display: "none"
-    }).end()
-    .find(".ui-dialog-titlebar-close").css({
-        display: "none"
-    });
+    $('#dialog').dialog("widget").find(".ui-dialog-titlebar").remove();
     $('#dialog').dialog("widget").css({border: "2px solid #1c94c4" });
     $('#dialog').load('environment/addModuleRepository.inc.php?' + sessId);
     $('#dialog').show();
@@ -188,73 +180,7 @@ function removeRepository(sessId) {
     });
 }
 
-function generateModuleIndex(sessionId) {
-    $('#resultGenerateModuleIndexId').html('generating Index');
-    $.ajax({
-        url: 'environment/generateModuleIndex.php?' + sessionId,
-        type: 'POST',
-        success: function(data) {
-            if(data == "success") {
-                $('#resultGenerateModuleIndexId').html('Index successfully generated');
-            }
-        }
-    });
-}
 </script>
-<div class="table99">
-    <div class="trow">
-        <div class="tcell99 vtop">
-            <div class="table99">
-                <div class="trow">
-                    <div class="tcell25 ui-widget-content" style="height:40px;vertical-align:middle;">DEBUG</div>
-                    <div style="height:40px;text-align:center;vertical-align:middle;" class="tcell25 ui-widget-content">
-                        <div class="onoffswitch" style="margin-left:auto;margin-right:auto;">
-                            <input onClick="checkIfChecked('DEBUGLEVELID', this.id);" type="checkbox" name="DEBUG" class="onoffswitch-checkbox" id="DEBUGId" <?php echo $debugOK ? "checked" : ""; ?>>
-                            <label class="onoffswitch-label" for="DEBUGId">
-                                <span class="onoffswitch-inner"></span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="tcell25 ui-widget-content" style="height:40px;vertical-align:middle;">DEBUGLEVEL</div>
-                    <div style="height:40px;text-align:center;vertical-align:middle;" class="tcell25 ui-widget-content">
-                        <input type="text" name="DEBUGLEVEL" id="DEBUGLEVELID" size=2 maxlength=2 width="20px;" value="<?php echo intval($debugLevel); ?>"<?php echo ($debugKO ? " disabled=\"disabled\"" : "") ?>>
-                    </div>
-                </div>
-                <div class="trow">
-                    <div class="tcell25 ui-widget-content" style="height:40px;vertical-align:middle;">UPLOAD</div>
-                    <div style="height:40px;text-align:center;vertical-align:middle;" class="tcell25 ui-widget-content">
-                        <div class="onoffswitch" style="margin-left:auto;margin-right:auto;">
-                            <input onClick="checkIfChecked('UPLOAD_SIZEID', this.id);" type="checkbox" name="UPLOAD" class="onoffswitch-checkbox" id="UPLOADId" <?php echo $uploadOK ? "checked" : ""; ?>>
-                            <label class="onoffswitch-label" for="UPLOADId">
-                                <span class="onoffswitch-inner"></span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="tcell25 ui-widget-content" style="height:40px;vertical-align:middle;">UPLOAD-SIZE</div>
-                    <div style="height:40px;text-align:center;vertical-align:middle;" class="tcell25 ui-widget-content">
-                        <input type="text" name="UPLOAD_SIZE" id="UPLOAD_SIZEID" size=2 maxlength=2 width="20px;" value="<?php echo intval($uploadSize); ?>"<?php echo ($uploadKO ? " disabled=\"disabled\"" : "") ?>>
-                    </div>
-                </div>
-            </div>
-            <div class="table99">
-                <div class="trow">
-                    <div class="tcell25 calign">
-                        <div id="resultUpdateEnvironmentId"></div>
-                    </div>
-                    <div class="tcell25 ralign">
-                        <button onclick="modifyEnvironment();">Aktualisieren</button>
-                    </div>
-                    <div class="tcell25 calign">
-                        <div id="resultGenerateModuleIndexId"></div>
-                    </div>
-                    <div class="tcell25 ralign">
-                        <button onclick="generateModuleIndex('<?php echo SID; ?>');" style="width:auto;">(Re-)Generate Module-Index</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="table" style="width:100%!important;margin-left:auto;margin-right:auto;">
     <div class="trow">
         <div class="tcell100 h40 ui-widget-header f12b calign">Available Repositories</div>
@@ -277,7 +203,7 @@ function generateModuleIndex(sessionId) {
                                             <div class="table">
                                                 <div class="trow">
                                                     <div class="tcell">
-                                                        <button class="defaultButton" disabled="disabled" id="saveSystemRepoButtonId" onclick="toggleSystemEditing(false, '<?php echo SID; ?>');">
+                                                        <button class="defaultButton" disabled="disabled" id="saveSystemRepoButtonId" onclick="toggleSystemEditing(true, '<?php echo SID; ?>');">
                                                             <img src="images/16x16/disk.png"><br>Save
                                                         </button>
                                                         <button class="defaultButton" id="modSystemRepoButtonId" onclick="toggleSystemEditing(true, '<?php echo SID; ?>');">

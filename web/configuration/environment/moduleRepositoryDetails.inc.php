@@ -67,7 +67,7 @@ function toggleEditing(flag) {
         var pass1Value       = $('#repoPass1ValueId').val();
         var pass2Value       = $('#repoPass2ValueId').val();
         if(pass1Value == pass2Value && pass1Value.length > 0 && flag) {
-            var formData = $('input,select').serialize();
+            var formData = $('input,textarea,select').serialize();
             var baseURL = 'environment/saveRepositories.inc.php?<?php echo SID; ?>';
             $.ajax({
                 url: baseURL,
