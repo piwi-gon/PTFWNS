@@ -34,7 +34,7 @@ ini_set("display_errors", 1);
 
 // load base-class
 require_once("cBase.inc.php");
-$base = new cBase();
+$base = new \PTFW\cBase();
 if(!is_object($base)) { echo "Start failed - No base-class found - exiting..." . (PHP_SAPI !== "cli"?"<br>":"\n"); exit(); }
 else { $base->getDebug()->deb("Base-class loaded"); }
 $base->getDebug()->deb("try to load language-file", "MSG", 2);

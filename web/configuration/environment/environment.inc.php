@@ -20,7 +20,6 @@ require_once(__DIR__."/../lib/baseStart.php");
 /**
  * now check the ini-settings
  */
-// echo "<pre>"; print_r($_SESSION['_ENV']); echo "</pre>";
 $debugOK    = ($_SESSION['_ENV']['DEBUG'] ? " checked=\"checked\"" : "");
 $debugKO    = (!$_SESSION['_ENV']['DEBUG'] ? " checked=\"checked\"" : "");
 $debugLevel = $_SESSION['_ENV']['DEBUGLEVEL'];
@@ -46,6 +45,8 @@ $(document).ready(function() {
     $('#repositorytabsId').tabs();
     $( "#repositorytabsId li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
     $('#cancelSystemRepoButtonId').hide();
+    $('.editable').each(function() { $(this).hide(); });
+    $('.readOnly').each(function() { $(this).show(); });
 });
 
 function showModRepoDetails(sessId) {
@@ -80,26 +81,22 @@ function toggleSystemAuthFields() {
 
 function toggleSystemEditing(flag, sessId) {
     if(!systemEditable) {
+        $('.readOnly').each(function() { $(this).hide(); });
+        $('.editable').each(function() { $(this).show(); });
+        var $onOffDiv = createOnOffDiv('systemRepoIsAuthValue', repoAuthIsAuthValue, 'toggleSystemAuthFields');
+        $('#systemRepoIsAuthEditId').html('').html(createOnOffDiv('systemRepoIsAuthValue', repoAuthIsAuthValue, 'toggleSystemAuthFields'));
         var repoURLValue          = $('#systemRepoURLId').html();
         var repoAuthIsAuthValue   = $('#systemRepoIsAuthId').html().substring(0,3) == "Yes";
         var repoAuthAuthFuncValue = $('#systemRepoAuthFuncId').html();
         var repoUserValue         = $('#systemRepoUserId').html();
-        $('#systemRepoURLId').html('<input type="text" name="systemRepoURLValue" style="width:400px;" id="systemRepoURLValueId" value="' + repoURLValue + '">');
-        var $onOffDiv = createOnOffDiv('systemRepoIsAuthValue', repoAuthIsAuthValue, 'toggleSystemAuthFields');
-        $('#systemRepoIsAuthId').html('').html(createOnOffDiv('systemRepoIsAuthValue', repoAuthIsAuthValue, 'toggleSystemAuthFields'));
-        $('#systemRepoAuthFuncId').html('<input type="text" name="systemRepoAuthFuncValue" id="systemRepoAuthFuncValueId" value="' + repoAuthAuthFuncValue + '">');
-        $('#systemRepoUserId').html('<input type="text" name="systemRepoUserValue" id="systemRepoUserValueId" value="' + repoUserValue + '">');
-        $('#systemRepoPassId').html('<div class="table" style="margin:0 auto;"><div class="trow">'+
-                '<div class="tcell"><input type="password" name="systemRepoPass1Value" id="systemRepoPass1ValueId" value="" placeholder="The Password"></div>' +
-                '<div class="tcell"><input type="password" name="systemRepoPass2Value" id="systemRepoPass2ValueId" value="" placeholder="The Password for Control"></div>'+
-                '</div></div>');
-        // $('#modSystemRepoButtonId').html('<img id="modButtonId" src="images/16x16/disk.png"><br>Save');
         $('#modSystemRepoButtonId').hide();
         $('#saveSystemRepoButtonId').show().prop("disabled", false).removeClass("ui-state-disabled");
         $('#cancelSystemRepoButtonId').show();
         systemEditable = true;
     } else {
         systemEditable = false;
+        $('.readOnly').each(function() { $(this).show(); });
+        $('.editable').each(function() { $(this).hide(); });
         var repoURLValue     = $('#systemRepoURLValueId').val();
         var repoAuthIsAuth   = $('#systemRepoIsAuthValueId').is(':checked');
         var repoAuthAuthFunc = $('#systemRepoAuthFuncValueId').val();
@@ -107,7 +104,6 @@ function toggleSystemEditing(flag, sessId) {
         var pass1Value       = $('#systemRepoPass1ValueId').val();
         var pass2Value       = $('#systemRepoPass2ValueId').val();
         if(pass1Value == pass2Value && flag) {
-            console.log("HIER");
             if(repoAuthIsAuth && pass1Value.length == 0) {
                 alert('No Password given');
             } else if(repoAuthIsAuth && repoAuthAuthFunc.length == 0) {
@@ -115,7 +111,6 @@ function toggleSystemEditing(flag, sessId) {
             } else {
                 var formData = $('input,textarea,select').serialize();
                 var baseURL = 'environment/saveRepositories.inc.php?<?php echo SID; ?>';
-                console.log(formData);
                 $.ajax({
                     url: baseURL + "&isSystem=true",
                     method: "POST",
@@ -140,7 +135,6 @@ function toggleSystemEditing(flag, sessId) {
         } else {
             $('#systemRepoPassId').html('is set');
         }
-        //$('#modSystemRepoButtonId').html('<img id="modButtonId" src="images/16x16/wrench.png"><br>Modify');
         $('#modSystemRepoButtonId').show();
         $('#saveSystemRepoButtonId').prop("disabled", true).addClass("ui-state-disabled");
         $('#cancelSystemRepoButtonId').hide();
@@ -219,23 +213,45 @@ function removeRepository(sessId) {
                                     </div>
                                     <div class="trow">
                                         <div class="tcell25 h40 ui-widget-content lalign" style="width:25%;">URL:</div>
-                                        <div class="tcell75 h40 ui-widget-content lalign" style="width:75%;"><div id="systemRepoURLId"><?php echo $repo['system']['repository']; ?></div></div>
+                                        <div class="tcell75 h40 ui-widget-content lalign" style="width:75%;">
+                                            <div class="readOnly" id="systemRepoURLId"><?php echo $repo['system']['repository']; ?></div>
+                                            <div class="editable"><input type="text" style="width: 400px;" name="systemRepoURLValue" id="systemRepoURLValueId" value="<?php echo $repo['system']['repository']; ?>"></div>
+                                        </div>
                                     </div>
                                     <div class="trow">
                                         <div class="tcell25 h40 ui-widget-content lalign" style="width:25%;">Auth:</div>
-                                        <div class="tcell75 h40 ui-widget-content lalign" style="width:75%;"><div id="systemRepoIsAuthId"><?php echo $repo['system']['auth'] == "true" ? "Yes" : "No"; ?></div></div>
+                                        <div class="tcell75 h40 ui-widget-content lalign" style="width:75%;">
+                                            <div class="readOnly" id="systemRepoIsAuthId"><?php echo $repo['system']['auth'] == "true" ? "Yes" : "No"; ?></div>
+                                            <div class="editable"><div id="systemRepoIsAuthEditId"></div></div>
+                                        </div>
                                     </div>
                                     <div class="trow">
                                         <div class="tcell25 h40 ui-widget-content lalign" style="width:25%;">Authfunc:</div>
-                                        <div class="tcell75 h40 ui-widget-content lalign" style="width:75%;"><div id="systemRepoAuthFuncId"><?php echo $repo['system']['authfunc']; ?></div></div>
+                                        <div class="tcell75 h40 ui-widget-content lalign" style="width:75%;">
+                                            <div class="readOnly" id="systemRepoAuthFuncId"><?php echo $repo['system']['authfunc']; ?></div>
+                                            <div class="editable"><input type="text" name="systemRepoAuthFuncValue" id="systemRepoAuthFuncValueId" value="<?php echo $repo['system']['authfunc']; ?>"></div>
+                                        </div>
                                     </div>
                                     <div class="trow">
                                         <div class="tcell25 h40 ui-widget-content lalign" style="width:25%;">User:</div>
-                                        <div class="tcell75 h40 ui-widget-content lalign" style="width:75%;"><div id="systemRepoUserId"><?php echo $repo['system']['username']; ?></div></div>
+                                        <div class="tcell75 h40 ui-widget-content lalign" style="width:75%;">
+                                            <div class="readOnly" id="systemRepoUserId"><?php echo $repo['system']['username']; ?></div>
+                                            <div class="editable"><input type="text" name="systemRepoUserValue" id="systemRepoUserValueId" value="<?php echo $repo['system']['username']; ?>"></div>
+                                        </div>
                                     </div>
                                     <div class="trow">
                                         <div class="tcell25 h40 ui-widget-content lalign" style="width:25%;">Pass:</div>
-                                        <div class="tcell75 h40 ui-widget-content lalign" style="width:75%;"><div id="systemRepoPassId"><?php echo $repo['system']['password'] != "" ? "is set" : "is not set"; ?></div></div>
+                                        <div class="tcell75 h40 ui-widget-content lalign" style="width:75%;">
+                                            <div class="readOnly" id="systemRepoPassId"><?php echo $repo['system']['password'] != "" ? "is set" : "is not set"; ?></div>
+                                            <div class="editable">
+                                                <div class="table">
+                                                    <div class="trow">
+                                                        <div class="tcell"><input type="password" name="systemRepoPass1Value" id="systemRepoPass1ValueId" value="" placeholder="The Password"></div>'
+                                                        <div class="tcell"><input type="password" name="systemRepoPass2Value" id="systemRepoPass2ValueId" value="" placeholder="The Password for Control"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -96,7 +96,7 @@ class cBase {
      */
     public function getModuleClass() {
         include_once(dirname(__FILE__) . DS . "base" . DS . "module" . DS . "current" . DS ."cModuleClass.inc.php");
-        $_moduleObject = new Base\Modules\ModuleClass\cModuleClass();
+        $_moduleObject = new Base\Module\ModuleClass\cModuleClass();
         if(!is_object($_moduleObject)) { die("no module-class installed - please contact your administrator - ".
                                              "maybe you are not allowed to install new modules"); }
         return $_moduleObject;
@@ -111,7 +111,7 @@ class cBase {
      */
     public function getExtensionClass() {
         include_once(dirname(__FILE__) . DS . "base" . DS . "module" . DS . "current" . DS ."cExtensionClass.inc.php");
-        $_extObject = new Base\Modules\Extension\cExtensionClass();
+        $_extObject = new Base\Module\Extension\cExtensionClass();
         if(!is_object($_extObject)) { die("no extension-class installed - please contact your administrator - ".
                                           "maybe you are not allowed to install new extensions"); }
         return $_extObject;
@@ -124,7 +124,7 @@ class cBase {
      */
     public function getBaseFile() {
         include_once(dirname(__FILE__) . DS . "base" . DS . "module" . DS . "current" . DS ."cBaseFile.inc.php");
-        $_moduleObject = new Base\Modules\File\cBaseFile();
+        $_moduleObject = new Base\Module\File\cBaseFile();
         if(!is_object($_moduleObject)) { die("no base-file-class installed - please contact your administrator"); }
         return $_moduleObject;
     }
@@ -136,7 +136,7 @@ class cBase {
      */
     public function getBaseTar() {
         include_once(dirname(__FILE__) . DS . "base" . DS . "module" . DS . "current" . DS ."cBaseTar.inc.php");
-        $_moduleObject = new Base\Modules\Tar\cBaseTar();
+        $_moduleObject = new Base\Module\Tar\cBaseTar();
         if(!is_object($_moduleObject)) { die("no base-tar-class installed - please contact your administrator"); }
         return $_moduleObject;
     }

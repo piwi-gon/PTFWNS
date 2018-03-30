@@ -13,7 +13,7 @@
  */
 
 try {
-    $client = new SoapClient($_POST['serviceURL']."?wsdl", array('exceptions'=>false));
+    $client = new SoapClient($_POST[$_GET['urlIdent']]."?wsdl", array('exceptions'=>false));
     if(is_object($client)) {
         $result = '<span style="background-color:darkgreen;color:white;font-weight:bold;">&nbsp;success&nbsp;</span>';
     }
