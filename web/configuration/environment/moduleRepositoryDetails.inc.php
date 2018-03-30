@@ -67,7 +67,16 @@ function toggleEditing(flag) {
         var pass1Value       = $('#repoPass1ValueId').val();
         var pass2Value       = $('#repoPass2ValueId').val();
         if(pass1Value == pass2Value && pass1Value.length > 0 && flag) {
-            alert('saving');
+            var formData = $('input,textarea,select').serialize();
+            var baseURL = 'environment/saveRepositories.inc.php?<?php echo SID; ?>';
+            $.ajax({
+                url: baseURL,
+                type:'POST',
+                data: formData,
+                success: function(data) {
+                    alert('saved');
+                }
+            });
         } else if(!flag) {
             console.log('action cancelled');
         } else {
@@ -89,23 +98,30 @@ function toggleEditing(flag) {
     }
 }
 </script>
-<div class="table ui-widget-content" style="width:99%;">
+<input type="hidden" name="selectedRepositoryName" id="selectedRepositoryNameId" value="<?php echo $repo['modules']['reponame'][$_GET ['selectedEntry']]; ?>">
+<div class="table99">
     <div class="trow">
-        <div class="tcellH40 ui-state-default ui-corner-top">
-            <div class="table ui-widget-content" style="width:99%!important;border:0;">
+        <div class="tcell100 h40 ui-state-default ui-corner-top lalign">
+            <div class="table99">
                 <div class="trow">
-                    <div class="tcell ui-state-default" style="vertical-align:middle;text-align:left;width:99%!important;border:0;">
+                    <div class="tcell70 ui-state-default lalign vmiddle">
                         Selected Repository: <?php echo $repo['modules']['reponame'][$_GET ['selectedEntry']]; ?>
                     </div>
-                    <div class="tcell" style="vertical-align:middle;text-align:right;width:99%!important;">
-                        <div class="table">
+                    <div class="tcell30 ralign vmiddle">
+                        <div class="table99">
                             <div class="trow">
                                 <div class="tcell">
-                                    <button class="ui-state-default ui-corner-all ui-state-disabled" disabled="disabled" id="saveModuleRepoButtonId" onclick="toggleEditing(true);" style="width:120px;"><img id="saveButtonId" src="images/16x16/disk.png"><br>Save</button>
+                                    <button class="defaultButton" disabled="disabled" id="saveModuleRepoButtonId" onclick="toggleEditing(true);">
+                                        <img id="saveButtonId" src="images/16x16/disk.png"><br>Save
+                                    </button>
                                 </div>
                                 <div class="tcell">
-                                    <button class="ui-state-default ui-corner-all" id="modModuleRepoButtonId" onclick="toggleEditing(true);" style="width:120px;"><img id="modButtonId" src="images/16x16/wrench.png"><br>Modify</button>
-                                    <button class="ui-state-default ui-corner-all" id="cancelModuleRepoButtonId" onclick="toggleEditing(false);" style="width:120px;"><img id="modButtonId" src="images/16x16/cancel.png"><br>Cancel</button>
+                                    <button id="modModuleRepoButtonId" onclick="toggleEditing(true);" class="defaultButton">
+                                        <img id="modButtonId" src="images/16x16/wrench.png"><br>Modify
+                                    </button>
+                                    <button id="cancelModuleRepoButtonId" onclick="toggleEditing(false);" class="defaultButton">
+                                        <img id="modButtonId" src="images/16x16/cancel.png"><br>Cancel
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -115,28 +131,36 @@ function toggleEditing(flag) {
         </div>
     </div>
 </div>
-<div class="table ui-widget-content" style="width:99%;">
+<div class="table99">
     <div class="trow">
-        <div class="tcellH40 ui-widget-content" style="width:25%;">URL:</div>
-        <div class="tcellH40 ui-widget-content" style="width:75%;"><div id="repoURLId"><?php echo $repo['modules']['modrepo'][$_GET ['selectedEntry']]; ?></div></div>
+        <div class="tcell25 h40 ui-widget-content lalign">URL:</div>
+        <div class="tcell75 h40 ui-widget-content lalign">
+            <div id="repoURLId"><?php echo $repo['modules']['modrepo'][$_GET ['selectedEntry']]; ?></div>
+        </div>
     </div>
     <div class="trow">
-        <div class="tcellH40 ui-widget-content" style="width:25%;">Auth:</div>
-        <div class="tcellH40 ui-widget-content" style="width:75%;">
+        <div class="tcell25 h40 ui-widget-content lalign">Auth:</div>
+        <div class="tcell75 h40 ui-widget-content lalign">
             <div id="repoAuthIsAuth"><?php echo $repo['modules']['auth'][$_GET ['selectedEntry']] == "true" ? "Yes"  : "No"; ?></div>
         </div>
     </div>
     <div class="trow">
-        <div class="tcellH40 ui-widget-content" style="width:25%;">Authfunc:</div>
-        <div class="tcellH40 ui-widget-content" style="width:75%;"><div id='repoAuthAuthFunc'><?php echo $repo['modules']['authfunc'][$_GET ['selectedEntry']]; ?></div></div>
+        <div class="tcell25 h40 ui-widget-content lalign">Authfunc:</div>
+        <div class="tcell75 h40 ui-widget-content lalign">
+            <div id='repoAuthAuthFunc'><?php echo $repo['modules']['authfunc'][$_GET ['selectedEntry']]; ?></div>
+        </div>
     </div>
 
     <div class="trow">
-        <div class="tcellH40 ui-widget-content" style="width:25%;">User:</div>
-        <div class="tcellH40 ui-widget-content" style="width:75%;"><div id="repoUserId"><?php echo $repo['modules']['username'][$_GET ['selectedEntry']]; ?></div></div>
+        <div class="tcell25 h40 ui-widget-content lalign">User:</div>
+        <div class="tcell75 h40 ui-widget-content lalign">
+            <div id="repoUserId"><?php echo $repo['modules']['username'][$_GET ['selectedEntry']]; ?></div>
+        </div>
     </div>
     <div class="trow">
-        <div class="tcellH40 ui-widget-content" style="width:25%;">Pass:</div>
-        <div class="tcellH40 ui-widget-content" style="width:75%;"><div id="repoPassId"><?php echo $repo['modules']['password'][$_GET ['selectedEntry']] != "" ? "is set" : "is not set"; ?></div></div>
+        <div class="tcell25 h40 ui-widget-content lalign">Pass:</div>
+        <div class="tcell75 h40 ui-widget-content lalign">
+            <div id="repoPassId"><?php echo $repo['modules']['password'][$_GET ['selectedEntry']] != "" ? "is set" : "is not set"; ?></div>
+        </div>
     </div>
 </div>

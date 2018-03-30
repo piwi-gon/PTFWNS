@@ -13,10 +13,15 @@
  */
 
 // start a session
+if(isset($_COOKIE['PHPSESSID'])) {
+    session_id($_COOKIE['PHPSESSID']);
+}
+session_set_cookie_params(180); // 3 minutes
 session_start();
+@define("SID",  session_name()."=".session_id());
 
-// get the location of frameweork
-$shareDir = "/usr/share/pear/ptfw/";
+// get the location of framework
+$shareDir = "/usr/share/pear/ptfwNS/";
 define("BASE_DIR", $shareDir);
 
 // ste the include-path to it
@@ -29,7 +34,7 @@ ini_set("display_errors", 1);
 
 // load base-class
 require_once("cBase.inc.php");
-$base = new cBase();
+$base = new \PTFW\cBase();
 if(!is_object($base)) { echo "Start failed - No base-class found - exiting..." . (PHP_SAPI !== "cli"?"<br>":"\n"); exit(); }
 else { $base->getDebug()->deb("Base-class loaded"); }
 $base->getDebug()->deb("try to load language-file", "MSG", 2);

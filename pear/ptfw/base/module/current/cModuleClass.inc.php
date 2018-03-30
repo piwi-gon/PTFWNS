@@ -97,7 +97,7 @@ class cModuleClass {
         $this->_createSoapClient();
         $this->_soapAction = "getModuleVersion";
         if(isset($this->_soapParams)) { unset($this->_soapParams); }
-        $this->_soapParams[] = new SoapParam($moduleName, "moduleName");
+        $this->_soapParams[] = new \SoapParam($moduleName, "moduleName");
         $this->_doCall();
         error_log("Version given: " . $moduleVersion . " <=> Module on Repo: " . $this->_soapResult . "\n", 3, "/tmp/soapRequests.log");
         $this->_actualRepoModuleVersion = $this->_soapResult;
@@ -114,7 +114,7 @@ class cModuleClass {
         $this->_createSoapClient();
         $this->_soapAction = "getModuleById";
         if(isset($this->_soapParams)) { unset($this->_soapParams); }
-        $this->_soapParams[] = new SoapParam($moduleId, "moduleId");
+        $this->_soapParams[] = new \SoapParam($moduleId, "moduleId");
         $this->_doCall();
         return $this->_soapResult;
     }
@@ -124,7 +124,7 @@ class cModuleClass {
         $this->_createSoapClient();
         $this->_soapAction = "getModule";
         if(isset($this->_soapParams)) { unset($this->_soapParams); }
-        $this->_soapParams[] = new SoapParam($moduleName, "moduleName");
+        $this->_soapParams[] = new \SoapParam($moduleName, "moduleName");
         $this->_doCall();
         return $this->_soapResult;
     }
@@ -134,7 +134,7 @@ class cModuleClass {
         $this->_createSoapClient();
         $this->_soapAction = "getModuleDetails";
         if(isset($this->_soapParams)) { unset($this->_soapParams); }
-        $this->_soapParams[] = new SoapParam($moduleId, "moduleId");
+        $this->_soapParams[] = new \SoapParam($moduleId, "moduleId");
         $this->_doCall();
         return $this->_soapResult;
     }
@@ -194,7 +194,21 @@ class cModuleClass {
         if(!is_object($baseFile)) { die("No Base-File found\n"); exit(); }
         $installDir = $baseFile->uncompress(INSTALL_UPLOADDIR . $moduleArchive, INSTALL_WORKDIR);
         // now install archive
-        $this->_installFrom(str_replace(".tar.gz", "", $moduleArchive));
+        // $this->_installFrom(str_replace(".tar.gz", "", $moduleArchive));
+        $dirToCheck = str_replace(".tar.gz", "", $moduleArchive);
+        if(file_exists(INSTALL_WORKDIR.$dirToCheck)) {
+            $this->_installFrom($dirToCheck);
+        } else {
+            $tokens = explode("-", $moduleArchive);
+            $dirToCheck = $tokens[0];
+            if(file_exists(INSTALL_WORKDIR.$dirToCheck)) {
+                $this->_installFrom($dirToCheck);
+            } else {
+                echo "No Files found to be installed - please check ...\n";
+                echo "check in'" . str_replace(".tar.gz", "", $moduleArchive) . "' and in '" . $tokens[0] . "' (WorkDir: '" . INSTALL_WORKDIR . "')\n";
+                exit(-1); 
+            }
+        }
         // does module exist?
         $installed = $this->_checkInstalledVersion();
         // if not - install it
@@ -284,7 +298,7 @@ class cModuleClass {
                         "uri" => "urn:testapi",
                         "trace" => 1); // ,
                         // "exceptions" => 0);
-        $this->_soapClient = new SoapClient($WSDL, $optionArray);
+        $this->_soapClient = new \SoapClient($WSDL, $optionArray);
     }
 
     private function _createModuleIndex() {
@@ -322,12 +336,13 @@ class cModuleClass {
     }
 
     private function _installFrom($installFromDir, $installToDir = "", $installInfo=array()) {
+        error_log("reading dir: '" . INSTALL_WORKDIR.$installFromDir . "'\n", 3, "/tmp/install.log");
         if(file_exists(INSTALL_WORKDIR.$installFromDir.DIRECTORY_SEPARATOR."manifest") && count($this->_installInfo)==0) {
             $this->_parseManifest(INSTALL_WORKDIR.$installFromDir.DIRECTORY_SEPARATOR."manifest");
             $this->_manifestFileLocation = INSTALL_WORKDIR.$installFromDir.DIRECTORY_SEPARATOR."manifest";
         }
         if($installToDir == "") { $installToDir = MODULE_DIR; $installFromDir .= INSTALL_MODULEDIR; }
-        error_log("reading dir: '" . INSTALL_WORKDIR.$installFromDir . "'\n", 3, "/tmp/install.log");
+        // error_log("reading dir: '" . INSTALL_WORKDIR.$installFromDir . "'\n", 3, "/tmp/install.log");
         // echo "reading dir: '" . INSTALL_WORKDIR.$installFromDir . "'" . (PHP_SAPI === "cli" ? "\n" : "<br>");
         $installFiles = scandir(INSTALL_WORKDIR.$installFromDir);
         if(count($this->_installInfo) > 0) {

@@ -18,7 +18,8 @@
 require_once(__DIR__."/../lib/baseStart.php");
 
 $repo = $base->getUpdateChecker()->querySystemRepository();
-
+print_r($_POST);
+print_r($_GET);
 if($_GET['deleteId'] == "") {
     if($_GET['isSystem']) {
         $repo['system']['auth']         = $_POST['systemRepoIsAuthValue'] != "" ? "true" : "false";
@@ -27,12 +28,13 @@ if($_GET['deleteId'] == "") {
         $repo['system']['username']     = $_POST['systemRepoUserValue'];
         $repo['system']['password']     = $_POST['systemRepoPass1Value'];
     } else {
-        $repo['modules']['auth'][]      = $_POST['AUTHENTICATION'] != "" ? "true" : "false";
-        $repo['modules']['authfunc'][]  = $_POST['moduleAuthFunc'];
-        $repo['modules']['modrepo'][]   = $_POST['serviceURL'];
-        $repo['modules']['username'][]  = $_POST['moduleUser'];
-        $repo['modules']['password'][]  = $_POST['modulePass'];
-        $repo['modules']['reponame'][]  = $_POST['repoName'];
+        $index = $_POST['selectedModuleRepository'];
+        $repo['modules']['auth'][$index]      = $_POST['repoAuthIsAuthValue'] == "true" ? "true" : "false";
+        $repo['modules']['authfunc'][$index]  = $_POST['repoAuthAuthFuncValue'];
+        $repo['modules']['modrepo'][$index]   = $_POST['repoURLValue'];
+        $repo['modules']['username'][$index]  = $_POST['repoUserValue'];
+        $repo['modules']['password'][$index]  = $_POST['repoPass1Value'];
+        $repo['modules']['reponame'][$index]  = $_POST['selectedRepositoryName'];
     }
 }
 $base->getUpdateChecker()->writeSystemRepositories($repo, $_GET['deleteId']);

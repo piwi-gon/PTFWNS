@@ -31,9 +31,9 @@ function showInfoDialog(baseURL, moduleName) {
 
 function createInstallDialog(sessId) {
     $('#dialog').hide();
-    $('#dialog').dialog({ height: 600, width: 900});
+    $('#dialog').dialog({ height: 'auto', width: 'auto'});
     $('#dialog').load('modules/addModule.inc.php?' + sessId, function(){
-    $.getScript('lib/js/uploadModule.js').fail('uploadModule.js could not be loaded').success(function() {
+    $.getScript('lib/js/uploadModule.js').fail('uploadModule.js could not be loaded').done(function() {
         addModuleUploadHandler('uploadModuleContainerId', ['.gz', '.tgz', '.zip']);});
     });
     $('#dialog').dialog("widget").find(".ui-dialog-titlebar").css({
@@ -53,7 +53,7 @@ function createInstallDialog(sessId) {
 
 function createRepositoryChoiceDialog(sessId) {
     $('#dialog').hide();
-    $('#dialog').dialog({ height: 600, width: 900});
+    $('#dialog').dialog({ height: 'auto', width: 'auto'});
     $('#dialog').load('modules/chooseRepository.inc.php?' + sessId);
     $('#dialog').dialog("widget").find(".ui-dialog-titlebar").css({
         "float": "right",
@@ -94,20 +94,44 @@ function toggleModuleActivity(sessId, fieldId) {
         success: function() {}
     });
 }
+
+function generateModuleIndex(sessionId) {
+    $('#resultGenerateModuleIndexId').html('generating Index');
+    $.ajax({
+        url: 'environment/generateModuleIndex.php?' + sessionId,
+        type: 'POST',
+        success: function(data) {
+            if(data == "success") {
+                $('#resultGenerateModuleIndexId').html('Index successfully generated');
+            }
+        }
+    });
+}
 </script>
-<div class="container" style="display:table;">
-    <div class="table-row">
+<div class="table100">
+    <div class="trow">
+        <div class="tcell25 lalign">
+            <button onclick="generateModuleIndex('<?php echo SID; ?>');" style="width:auto;">(Re-)Generate Module-Index</button>
+        </div>
+        <div class="tcell75 calign">
+            <div id="resultGenerateModuleIndexId"></div>
+        </div>
+
+    </div>
+</div>
+<div class="container table100">
+    <div class="trow">
         <div class="table-header-cell ui-state-default ui-corner-tl">
             <div class="table">
                 <div class="trow">
                     <div class="tcell">
-                        <button class="ui-widget-header ui-corner-all" style="padding:5px;" id="selectRepositoryId"
+                        <button style="width:40px;" id="selectRepositoryId"
                                 onClick="createRepositoryChoiceDialog('<?php echo SID; ?>');">
                             <img src="images/16x16/plugin.png" border="0">
                         </button>
                     </div>
                     <div class="tcell">
-                        <button class="ui-widget-header ui-corner-all ui-state-disabled" style="padding:5px;" id="installModuleId" disabled="disabled"
+                        <button style="width:40px;" id="installModuleId" disabled="disabled"
                                 onClick="createInstallDialog('<?php echo SID; ?>');">
                             <img src="images/16x16/page_white.png" border="0">
                         </button>
@@ -176,7 +200,7 @@ for($count = 0; $count < count($MODULES); $count++) {
             <div class="container">
                 <div class="table-row">
                     <div class="tcell10" style="vertical-align:middle;text-align:center;">
-                        <button class="ui-widget-header ui-corner-all" style="padding:5px;" onClick="showInfoDialog('<?php echo "PHPSESSID=".session_id(); ?>', '<?php echo $MODULES[$count]['moduleName']; ?>');">
+                        <button class="smallButton" onClick="showInfoDialog('<?php echo "PHPSESSID=".session_id(); ?>', '<?php echo $MODULES[$count]['moduleName']; ?>');">
                             <img src="images/16x16/info_rhombus.png" border="0">
                         </button>
                     </div>

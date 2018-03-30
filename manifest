@@ -2,7 +2,7 @@ SystemName: ptfw
 main-class: cBase
 main-file: cBase.inc.php
 classes: cBase
-version: v1.0.2
+version: v1.0.3
 realeased: 2014-06-22
 author: piwi (piwi.gon@osnanet.de)
 description:
@@ -11,3 +11,4 @@ history:
 v1.0.0 -    released:   2014-06-22  initial release
 v1.0.1 -    released:   2015-05-10  removed unnecessary types in classes
 v1.0.2 -    released:   2016-01-19  added repository for modules to use different ones
+v1.0.3 -    released:   2016-06-12  updated jquery to version 3.0
