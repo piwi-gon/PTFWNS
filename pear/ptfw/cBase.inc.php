@@ -24,6 +24,14 @@
 
 namespace PTFW;
 
+use PTFW\Base\Config\cConfiguration;
+use PTFW\Base\Lang\cLanguage;
+use PTFW\Base\Module\Extension\cExtensionClass;
+use PTFW\Base\Module\File\cBaseFile;
+use PTFW\Base\Module\ModuleClass\cModuleClass;
+use PTFW\Base\Module\Tar\cBaseTar;
+use PTFW\Base\Update\Checker\cUpdateChecker;
+
 @define("DS", DIRECTORY_SEPARATOR);
 @define("isIni", true);
 @define("_BASEDIR_", dirname(__FILE__));
@@ -41,9 +49,11 @@ class cBase {
 
     public function __construct() {
         include_once(_BASEDIR_ . DS . "base" . DS . "debug" . DS . "current" . DS . "cDebug.inc.php");
-        $debugObject = new Base\Debug\cDebug();
-        if(!is_object($debugObject)) { die("no debug-class installed - please contact your administrator"); }
-        $this->_DEBUG = $debugObject;
+        if(!is_object($this->_DEBUG)) {
+            $debugObject = new Base\Debug\cDebug();
+            if(!is_object($debugObject)) { die("no debug-class installed - please contact your administrator"); }
+            $this->_DEBUG = $debugObject;
+        }
         $this->getConfiguration()->loadConfiguration();
     }
 
@@ -92,7 +102,7 @@ class cBase {
      *
      * this class ist the loader for all the installed modules
      *
-     * @return cModule
+     * @return cModuleClass
      */
     public function getModuleClass() {
         include_once(dirname(__FILE__) . DS . "base" . DS . "module" . DS . "current" . DS ."cModuleClass.inc.php");
@@ -107,7 +117,7 @@ class cBase {
      *
      * this class ist the loader for all the installed extensions
      *
-     * @return cExtension
+     * @return cExtensionClass
      */
     public function getExtensionClass() {
         include_once(dirname(__FILE__) . DS . "base" . DS . "module" . DS . "current" . DS ."cExtensionClass.inc.php");
@@ -149,16 +159,16 @@ class cBase {
     public function getUpdateChecker() {
         include_once(dirname(__FILE__) . DS . "base" . DS . "update" . DS . "current" . DS ."cUpdateChecker.inc.php");
         $_updateCheckerObject = new Base\Update\Checker\cUpdateChecker();
-        if(!is_object($_updateCheckerObject)) { die("no base-tar-class installed - please contact your administrator"); }
+        if(!is_object($_updateCheckerObject)) { die("no updatechecker-class installed - please contact your administrator"); }
         return $_updateCheckerObject;
     }
 
     /**
      * here is where the magic starts - the __call-method of php is widely used
      * to call a class
-     * 
+     *
      * the method is the class-name and the args for this class (if necessary)
-     * 
+     *
      * @param string $method
      * @param mixed $args
      * @return object|NULL

@@ -51,6 +51,28 @@ function createInstallDialog(sessId) {
     $('#dialog').show();
 }
 
+function createInstallFromGitHubDialog(sessId) {
+    $('#dialog').hide();
+    $('#dialog').dialog({ height: determineHeight(80), width: determineWidth(80)});
+    $('#dialog').load('modules/addModuleFromGithub.inc.php?' + sessId, function(){
+    $.getScript('lib/js/uploadModule.js').fail('uploadModule.js could not be loaded').done(function() {
+        addModuleUploadHandler('uploadModuleContainerId', ['.gz', '.tgz', '.zip']);});
+    });
+    $('#dialog').dialog("widget").find(".ui-dialog-titlebar").css({
+        "float": "right",
+        padding: 0,
+        border: 0
+    })
+    .find(".ui-dialog-title").css({
+        display: "none"
+    }).end()
+    .find(".ui-dialog-titlebar-close").css({
+        display: "none"
+    });
+    $('#dialog').dialog("widget").css({border: "2px solid #1c94c4" });
+    $('#dialog').show();
+}
+
 function createRepositoryChoiceDialog(sessId) {
     $('#dialog').hide();
     $('#dialog').dialog({ height: 'auto', width: 'auto'});
@@ -124,16 +146,21 @@ function generateModuleIndex(sessionId) {
         <div class="table-header-cell ui-state-default ui-corner-tl">
             <div class="table">
                 <div class="trow">
-                    <div class="tcell">
-                        <button style="width:40px;" id="selectRepositoryId"
+                    <div class="tcell" style="vertical-align:middle;">
+                        <button style="width:50px;height:50px;" id="selectRepositoryId"
                                 onClick="createRepositoryChoiceDialog('<?php echo SID; ?>');">
-                            <img src="images/16x16/plugin.png" border="0">
+                            <img src="images/32x32/plugin.png" border="0">
                         </button>
                     </div>
-                    <div class="tcell">
+                    <div class="tcell" style="vertical-align:middle;">
                         <button style="width:40px;" id="installModuleId" disabled="disabled"
                                 onClick="createInstallDialog('<?php echo SID; ?>');">
-                            <img src="images/16x16/page_white.png" border="0">
+                            <img src="images/32x32/page_white.png" border="0">
+                        </button>
+                    </div>
+                    <div class="tcell" style="vertical-align:middle;">
+                        <button style="width:40px;" id="installModuleFromGitHubId" onClick="createInstallFromGitHubDialog('<?php echo SID; ?>');">
+                            <img src="images/32x32/GitHub-Mark-32px.png" border="0">
                         </button>
                     </div>
                 </div>

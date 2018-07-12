@@ -14,9 +14,6 @@
 
 namespace PTFW\Base\Module\ModuleClass;
 
-//@define("SOAPURL",  "http://localhost/ptfwmanager/webservice/server.php");
-//@define("SOAPWSDL", SOAPURL . "?wsdl");
-
 class cModuleClass {
 
     private $_sql;
@@ -206,7 +203,7 @@ class cModuleClass {
             } else {
                 echo "No Files found to be installed - please check ...\n";
                 echo "check in'" . str_replace(".tar.gz", "", $moduleArchive) . "' and in '" . $tokens[0] . "' (WorkDir: '" . INSTALL_WORKDIR . "')\n";
-                exit(-1); 
+                exit(-1);
             }
         }
         // does module exist?
@@ -278,7 +275,7 @@ class cModuleClass {
     private function _doCall() {
         try {
             $this->_soapResult = $this->_soapClient->__call($this->_soapAction, $this->_soapParams);
-        } catch(Exception $ex) {
+        } catch(\Exception $ex) {
             echo "<pre>";
             echo "Functions are (URL: " . $this->_SOAPWSDL . "): <br>";
             print_r($this->_soapClient->__getFunctions());

@@ -47,6 +47,7 @@ $(document).ready(function() {
     $('#cancelSystemRepoButtonId').hide();
     $('.editable').each(function() { $(this).hide(); });
     $('.readOnly').each(function() { $(this).show(); });
+    $('#systemSettingsContentId').load('environment/systemSettings.inc.php');
 });
 
 function showModRepoDetails(sessId) {
@@ -175,6 +176,16 @@ function removeRepository(sessId) {
 }
 
 </script>
+<div class="table" style="width:100%!important;margin-left:auto;margin-right:auto;">
+    <div class="trow">
+        <div class="tcell100 h40 ui-widget-header f12b calign">Available System-Settings</div>
+    </div>
+    <div class="trow">
+        <div class="tcell100 h40 ui-widget-header f12b calign">
+            <div id="systemSettingsContentId" style="width:100%;height:auto"></div>
+        </div>
+    </div>
+</div>
 <div class="table" style="width:100%!important;margin-left:auto;margin-right:auto;">
     <div class="trow">
         <div class="tcell100 h40 ui-widget-header f12b calign">Available Repositories</div>

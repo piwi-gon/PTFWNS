@@ -31,13 +31,3 @@ function loadInDialog(site, theWidth, theHeight) {
     $('#dialog').show();
 }
 
-function createOnOffDiv(fieldName, checkedvalue, functionName) {
-    var theDiv = '<div class="onoffswitch_small" style="margin:0 auto;">\n'+
-                 '<input onClick="'+functionName+'();" type="checkbox" class="onoffswitch_small-checkbox" name="'+fieldName+'" '+
-                 'id="'+fieldName+'Id" value="true"' + (checkedvalue ? ' checked="checked"' : '') + '>\n'+
-                 '<label class="onoffswitch_small-label" for="'+fieldName+'Id">'+
-                 '<span class="onoffswitch_small-inner"></span>'+
-                 '</label>\n'+
-                 '</div>\n';
-    return theDiv;
-}

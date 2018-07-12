@@ -16,7 +16,10 @@
 if(isset($_COOKIE['PHPSESSID'])) {
     session_id($_COOKIE['PHPSESSID']);
 }
-session_set_cookie_params(180); // 3 minutes
+/**
+ * set default cookie-timeout to 3 minutes -> 180 seconds
+ */
+session_set_cookie_params(180);
 session_start();
 @define("SID",  session_name()."=".session_id());
 
