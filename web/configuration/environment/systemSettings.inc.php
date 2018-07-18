@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * systemSettings.inc.php
  *
  * author: klaus
@@ -14,8 +14,17 @@
  */
 require_once(__DIR__."/../lib/baseStart.php");
 
-$system['version_installed'] = $base->getInstalledSystemVersion();
-$system['version_available'] = $base->getVersion();
+$system['version_installed'] = $_SESSION['_ENV']['VERSION'];
+$system['version_available'] = $base->getAvailableVersion();
+/**
+ * now check the ini-settings
+ */
+$debugOK    = ($_SESSION['_ENV']['DEBUG'] ? " checked=\"checked\"" : "");
+$debugKO    = (!$_SESSION['_ENV']['DEBUG'] ? " checked=\"checked\"" : "");
+$debugLevel = $_SESSION['_ENV']['DEBUGLEVEL'];
+$uploadOK   = ($_SESSION['_ENV']['UPLOAD'] ? " checked=\"checked\"" : "");
+$uploadKO   = (!$_SESSION['_ENV']['UPLOAD'] ? " checked=\"checked\"" : "");
+$uploadSize = $_SESSION['_ENV']['UPLOAD_SIZE'];
 ?>
 <div class="table99">
     <div class="trow">
@@ -63,43 +72,35 @@ $system['version_available'] = $base->getVersion();
                 </div>
             </div>
         </div>
-        <div class="tcell50 ui-widget-content" style="height:40px;vertical-align:middle;">
-            <div class="table99" style="width:100%;margin:0 auto;">
+        <div class="tcell50 ui-widget-content h40">
+            <div class="table99">
                 <div class="trow">
-                    <div class="tcell30">System-Version:</div>
-                    <div class="tcell70">
+                    <div class="tcell30 h40">System-Version:</div>
+                    <div class="tcell70 h40 lalign">
                         <?php echo $system['version_installed']; ?>
                     </div>
                 </div>
+            </div>
+            <div class="table99">
                 <div class="trow">
-                    <div class="tcell30">is actual:</div>
-                    <div class="tcell70">
-                        <?php echo $system['actual'] ? "yes" : "new version available (" . $system['version_available'] . ")"; ?>
+                    <div class="tcell30 h40">Available Version:</div>
+                    <div class="tcell50 h40 lalign">
+                        <?php echo $system['version_available']; ?>
                     </div>
-                </div>
+                    <div class="tcell20 h40 ralign">
 <?php
 if(!$system['actual']) {
 ?>
-            </div>
-            <div class="table">
-                <div class="trow">
-                    <div class="tcell100" style="text-align:right;">
-                        <button onClick="updatePTFWSystem('<?php echo SID; ?>');" class="ui-state-default ui-corner-all" title="update to new Version">Update</button>
-                    </div>
-                </div>
+                        <button onClick="updatePTFWSystem('<?php echo SID; ?>');" title="update to new Version">Aktualisieren</button>
 <?php
 } else {
 ?>
-            </div>
-            <div class="table">
-                <div class="trow">
-                    <div class="tcell100" style="text-align:right;">
-                        <button onClick="refreshPTFWSystem('<?php echo SID; ?>');" class="ui-state-default ui-corner-all" title="refresh installation">Refresh</button>
-                    </div>
-                </div>
+                        <button onClick="refreshPTFWSystem('<?php echo SID; ?>');" title="refresh installation">Erneuern</button>
 <?php
 }
 ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

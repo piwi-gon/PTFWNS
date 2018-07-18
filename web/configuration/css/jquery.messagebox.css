@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+.messagebox-background {
+    background-color: lightgrey;
+}
+.message-box-content {
+    border: 2px ridge silver;
+    min-height:150px;
+    max-height:600px;
+    height:auto;
+    line-height:20pt;
+    display:flex;
+    overflow:auto;
+}
+
+.message-box-button-row {
+    height:48px;
+    text-align:center;
+    border: 2px ridge silver;
+    padding-top: 9px;
+    background-color: white;
+}
+
+.message-box-button {
+    border-top:1px solid lightgrey;
+    border-left:1px solid lightgrey;
+    border-bottom:1px solid grey;
+    border-right:1px solid grey;
+    border-radius: 4px;
+    background-color:#ddd;
+    background: linear-gradient(#eee, #ddd);
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-left: 17px;
+    margin-right: 17px;
+    margin-top: 0px;
+    margin-bottom: 8px;
+    padding-top: 0;
+    padding-bottom: 0;
+    width:110px;
+    height: 40px;
+}
+.message-box-button:active, .message-box-button:focus {
+    background: linear-gradient(#ddd, #ddd);
+    border-top:1px solid lightgrey;
+    border-left:1px solid lightgrey;
+    border-bottom:1px solid lightgreygrey;
+    border-right:1px solid lightgreygrey;
+}
+.message-box-button:hover {
+    background: linear-gradient(#fefefe, #eee);
+}
+
+.message-box-blgrey {
+    background-color: lightgrey;
+}

@@ -12,9 +12,17 @@
  *
  */
 
+if($_GET['show']!="true") {
+?>
+<iframe src="phpinfo.php?show=true" style="width:99%;overflow:auto;margin:0 auto;border:0;height:800px;"></iframe>
+<?php
+} else {
 ?>
 <div style="width:1200px;overflow:auto;">
 <?php
 phpinfo();
 ?>
 </div>
+<?php
+}
+?>

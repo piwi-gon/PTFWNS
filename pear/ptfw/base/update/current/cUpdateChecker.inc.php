@@ -51,14 +51,22 @@ class cUpdateChecker {
      */
    public function writeSystemRepositories($VAR, $deleteId) {
        if($deleteId == null) { $deleteId = -1; }
+       print_r($VAR);
+       exit;
        $fp = fopen(_BASEDIR_ . "/index/repositories.idx", "w+");
        if($fp != null) {
            fwrite($fp, "[system]\n");
+           fwrite($fp, "active_repo_type = ".$VAR['system']['active_repo_type']."\n");
            fwrite($fp, "auth = ".$VAR['system']['auth']."\n");
            fwrite($fp, "authfunc = ".$VAR['system']['authfunc']."\n");
            fwrite($fp, "repository = ".$VAR['system']['repository']."\n");
            fwrite($fp, "username = ".$VAR['system']['username']."\n");
            fwrite($fp, "password = ".$VAR['system']['password']."\n");
+           fwrite($fp, "github_auth = ".$VAR['system']['github_auth']."\n");
+           fwrite($fp, "github_repository = ".$VAR['system']['github_repository']."\n");
+           fwrite($fp, "github_username = ".$VAR['system']['github_username']."\n");
+           fwrite($fp, "github_deploy_key = ".$VAR['system']['github_deploy_key']."\n");
+           fwrite($fp, "github_repotype = ".$VAR['system']['github_repotype']."\n");
            fwrite($fp, "\n[modules]\n");
            $deleted = 0;
            for($count = 0; $count < count($VAR['modules']['modrepo']); $count++) {
@@ -69,6 +77,10 @@ class cUpdateChecker {
                    fwrite($fp, "username[".($count-$deleted)."] = ".$VAR['modules']['username'][($count)]."\n");
                    fwrite($fp, "password[".($count-$deleted)."] = ".$VAR['modules']['password'][($count)]."\n");
                    fwrite($fp, "reponame[".($count-$deleted)."] = ".$VAR['modules']['reponame'][($count)]."\n");
+                   fwrite($fp, "github_auth = ".$VAR['modules']['github_auth']."\n");
+                   fwrite($fp, "github_repository = ".$VAR['modules']['github_repository']."\n");
+                   fwrite($fp, "github_username = ".$VAR['modules']['github_username']."\n");
+                   fwrite($fp, "github_password = ".$VAR['modules']['github_password']."\n");
                } else {
                    echo "found!";
                    $deleted = 1;

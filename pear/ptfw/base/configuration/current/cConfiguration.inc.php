@@ -46,7 +46,7 @@ class cConfiguration extends \PTFW\BASE {
      * it loads the correct configuration-class with is relative
      * namespace path
      *
-     * @return string[]|unknown[]|mixed[]
+     * @return string[]|array[]|mixed[]
      */
     public function getListOfExtensions() {
         if(isIni) {
@@ -65,7 +65,7 @@ class cConfiguration extends \PTFW\BASE {
      * it loads the correct configuration-class with is relative
      * namespace path
      *
-     * @return string[]|unknown[]|mixed[]
+     * @return string[]|array[]|mixed[]
      */
     public function getListOfModules() {
         if(isIni) {
@@ -86,7 +86,7 @@ class cConfiguration extends \PTFW\BASE {
      * it loads the correct configuration-class with is relative
      * namespace path
      *
-     * @return string[]|unknown[]|mixed[]
+     * @return string[]|array[]|mixed[]
      */
     public function loadConfiguration() {
         $this->readEnvironment();
@@ -118,10 +118,14 @@ class cConfiguration extends \PTFW\BASE {
                 if(intval($tokens[1])>0) {
                     $_SESSION['_ENV'][$tokens[0]] = $tokens[1];
                 } else {
-                    if(strtoupper($tokens[1]) == "ON" || strtoupper($tokens[1]) == "TRUE") {
-                        $_SESSION['_ENV'][$tokens[0]] = true;
+                    if(substr(strtolower($tokens[0]), 0, 1) == "v") {
+                        $_SESSION['_ENV'][$tokens[0]] = $tokens[1];
                     } else {
-                        $_SESSION['_ENV'][$tokens[0]] = false;
+                        if(strtoupper($tokens[1]) == "ON" || strtoupper($tokens[1]) == "TRUE") {
+                            $_SESSION['_ENV'][$tokens[0]] = true;
+                        } else {
+                            $_SESSION['_ENV'][$tokens[0]] = false;
+                        }
                     }
                 }
             }

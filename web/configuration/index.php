@@ -22,10 +22,11 @@ if(isset($_SESSION['SCRIPT']['_ONDOCUMENTREADY'])) { unset($_SESSION['SCRIPT']['
 <head>
     <title>PTFW - Piwi Gon Technologies Framework</title>
     <link rel="stylesheet" href="css/jqueryui/jquery-ui.css">
+    <link rel="stylesheet" href="css/jquery.messagebox.css">
     <link rel="stylesheet" href="css/base.css">
     <script type="text/javascript" src="lib/js/jquery/jquery.js"></script>
     <script type="text/javascript" src="lib/js/jquery/jquery-ui.js"></script>
-    <script type="text/javascript" src="lib/js/jquery.buttonsetv.js"></script>
+    <script type="text/javascript" src="lib/js/jquery.messagebox.widget.js"></script>
     <script type="text/javascript" src="lib/js/base.js"></script>
 </head>
 <script>
@@ -57,7 +58,6 @@ $(document).ready(function() {
                         <li><a href="javascript:preventDefault();return false;" onClick="$('#mainId').html('').load('docs/info.html');">Home</a></li>
                         <li><a href="javascript:preventDefault();return false;" onClick="$('#mainId').html('').load('docs/docIndex.php');">Documentation</a></li>
                         <li><a href="javascript:preventDefault();return false;" onClick="$('#mainId').html('').load('environment/environment.inc.php?<?php echo SID; ?>');">Environment</a></li>
-                        <!-- <li><a href="javascript:preventDefault();return false;" onClick="$('#mainId').html('').load('system/system.inc.php?<?php echo SID; ?>');">System</a></li> -->
                         <li><a href="javascript:preventDefault();return false;" onClick="$('#mainId').html('').load('modules/listModules.inc.php?<?php echo SID; ?>');">Modules</a></li>
                         <li><a href="javascript:preventDefault();return false;" onClick="$('#mainId').html('').load('extensions/listExtensions.inc.php?<?php echo SID; ?>');">Extensions</a></li>
                         <li><a href="javascript:preventDefault();return false;" onClick="$('#mainId').html('').load('phpinfo.php');">PHPInfo</a></li>
