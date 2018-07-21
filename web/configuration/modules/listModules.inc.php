@@ -31,7 +31,7 @@ function showInfoDialog(baseURL, moduleName) {
 
 function createInstallDialog(sessId) {
     $('#dialog').hide();
-    $('#dialog').dialog({ height: 'auto', width: 'auto'});
+    $('#dialog').dialog({ height: determineHeight(80), width:determineWidth(80) });
     $('#dialog').load('modules/addModule.inc.php?' + sessId, function(){
     $.getScript('lib/js/uploadModule.js').fail('uploadModule.js could not be loaded').done(function() {
         addModuleUploadHandler('uploadModuleContainerId', ['.gz', '.tgz', '.zip']);});
@@ -75,7 +75,7 @@ function createInstallFromGitHubDialog(sessId) {
 
 function createRepositoryChoiceDialog(sessId) {
     $('#dialog').hide();
-    $('#dialog').dialog({ height: 'auto', width: 'auto'});
+    $('#dialog').dialog({ height: determineHeight(40), width: determineWidth(20)});
     $('#dialog').load('modules/chooseRepository.inc.php?' + sessId);
     $('#dialog').dialog("widget").find(".ui-dialog-titlebar").css({
         "float": "right",
@@ -130,7 +130,7 @@ function generateModuleIndex(sessionId) {
     });
 }
 </script>
-<div class="table100">
+<div class="table99">
     <div class="trow">
         <div class="tcell25 lalign">
             <button onclick="generateModuleIndex('<?php echo SID; ?>');" style="width:auto;">(Re-)Generate Module-Index</button>
@@ -141,46 +141,46 @@ function generateModuleIndex(sessionId) {
 
     </div>
 </div>
-<div class="container table100">
+<div class="container table99">
     <div class="trow">
-        <div class="table-header-cell ui-state-default ui-corner-tl">
+        <div class="tcell ui-widget-header ui-corner-tl vmiddle">
             <div class="table">
                 <div class="trow">
                     <div class="tcell" style="vertical-align:middle;">
-                        <button style="width:50px;height:50px;" id="selectRepositoryId"
+                        <button style="width:50px;" id="selectRepositoryId"
                                 onClick="createRepositoryChoiceDialog('<?php echo SID; ?>');">
                             <img src="images/32x32/plugin.png" border="0">
                         </button>
                     </div>
                     <div class="tcell" style="vertical-align:middle;">
-                        <button style="width:40px;" id="installModuleId" disabled="disabled"
+                        <button style="width:50px;" id="installModuleId" disabled="disabled"
                                 onClick="createInstallDialog('<?php echo SID; ?>');">
                             <img src="images/32x32/page_white.png" border="0">
                         </button>
                     </div>
                     <div class="tcell" style="vertical-align:middle;">
-                        <button style="width:40px;" id="installModuleFromGitHubId" onClick="createInstallFromGitHubDialog('<?php echo SID; ?>');">
+                        <button style="width:50px;" id="installModuleFromGitHubId" onClick="createInstallFromGitHubDialog('<?php echo SID; ?>');">
                             <img src="images/32x32/GitHub-Mark-32px.png" border="0">
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="table-header-cell ui-state-default" style="text-align:center">
-            Modules installed in: <?php echo BASE_DIR . DS . "modules" . DS; ?>
+        <div class="tcell ui-widget-header vmiddle" style="text-align:center">
+            Modules installed in:<br><?php echo BASE_DIR . DS . "modules" . DS; ?>
         </div>
-        <div class="table-header-cell ui-state-default" style="text-align:center">
+        <div class="tcell ui-widget-header vmiddle" style="text-align:center">
             Num of Modules currently installed: <?php echo count($MODULES); ?>
         </div>
-        <div class="table-header-cell ui-state-default ui-corner-tr" style="text-align:right">
+        <div class="tcell ui-widget-header ui-corner-tr vmiddle" style="text-align:right">
             <div class="table100">
                 <div class="trow">
                     <div class="tcell100">
                         <div class="table100"  style="text-align:right">
                             <div class="trow">
-                                <div class="tcell" style="width:80%;text-align:right;">Use Modules&nbsp;&nbsp;&nbsp;</div>
-                                <div class="tcell" style="width:20%;text-align:center;vertical-align:middle;">
-                                    <div class="onoffswitch" style="margin-left:auto;margin-right:auto;margin-top:-7px;">
+                                <div class="tcell50 h40 vmiddle lalign">Use Modules&nbsp;&nbsp;&nbsp;</div>
+                                <div class="tcell50 h40 vmiddle calign">
+                                    <div class="onoffswitch" style="margin-left:auto;margin-right:auto;">
                                         <input onClick="checkIfChecked('USE_MODULES', this.id);" type="checkbox" name="onoffswitchModules" class="onoffswitch-checkbox" id="switchOnOffUseModulesId" <?php echo $modOK ? "checked" : ""; ?>>
                                         <label class="onoffswitch-label" for="switchOnOffUseModulesId">
                                             <span class="onoffswitch-inner"></span>
@@ -195,20 +195,19 @@ function generateModuleIndex(sessionId) {
         </div>
     </div>
 </div>
-<br>
-<div class="container" style="display:table;">
-    <div class="table-row">
-        <div class="thcell ui-state-default" style="width:5%;">No</div>
-        <div class="thcell ui-state-default" style="width:10%;">Filename</div>
-        <div class="thcell ui-state-default" style="width:20%;">Path (relative to module-install-path)</div>
-        <div class="thcell ui-state-default" style="width:55%;">
-            <div class="table100">
+<div class="container" style="display:table;overflow:auto;">
+    <div class="trow">
+        <div class="tcell5 h40 ui-widget-header">No</div>
+        <div class="tcell20 h40 ui-widget-header">Filename</div>
+        <div class="tcell20 h40 ui-widget-header">Path (relative to module-install-path)</div>
+        <div class="tcell55 h40 ui-widget-header vmiddle">
+            <div class="table99">
                 <div class="trow">
-                    <div class="tcell10" style="text-align:center;">Info</div>
-                    <div class="tcell15" style="text-align:center;">Version</div>
-                    <div class="tcell50" style="text-align:center;">Repository</div>
-                    <div class="tcell10" style="text-align:center;">Actual</div>
-                    <div class="tcell15" style="text-align:center;">Active</div>
+                    <div class="tcell15 ui-widget-header" style="text-align:center;">Info</div>
+                    <div class="tcell15 ui-widget-header" style="text-align:center;">Version</div>
+                    <div class="tcell45 ui-widget-header" style="text-align:center;">Repository</div>
+                    <div class="tcell10 ui-widget-header" style="text-align:center;">Actual</div>
+                    <div class="tcell15 ui-widget-header" style="text-align:center;">Active</div>
                 </div>
             </div>
         </div>
@@ -217,27 +216,27 @@ function generateModuleIndex(sessionId) {
 $modCounter=0;
 for($count = 0; $count < count($MODULES); $count++) {
     $modCounter++;
-    $state  = ((($count+1)%2)==0) ? "ui-widget-content" : "ui-widget-content-alt";
+    $state  = ((($count+1)%2)==0) ? "ui-widget-content" : "ui-widget-content";
 ?>
-    <div class="table-row">
-        <div class="table-cell <?php echo $state; ?>" style="width:5%;vertical-align:middle;"><?php echo sprintf("%03d", ($modCounter)); ?></div>
-        <div class="table-cell <?php echo $state; ?>" style="width:20%;vertical-align:middle;"><?php echo $MODULES[$count]['name']; ?></div>
-        <div class="table-cell <?php echo $state; ?>" style="width:20%;vertical-align:middle;"><?php echo $MODULES[$count]['path']; ?></div>
-        <div class="table-cell <?php echo $state; ?>" style="width:55%;vertical-align:middle;">
-            <div class="container">
-                <div class="table-row">
-                    <div class="tcell10" style="vertical-align:middle;text-align:center;">
+    <div class="trow">
+        <div class="tcell5 ui-widget-content vmiddle"><?php echo sprintf("%03d", ($modCounter)); ?></div>
+        <div class="tcell20 ui-widget-content vmiddle"><?php echo $MODULES[$count]['name']; ?></div>
+        <div class="tcell20 ui-widget-content vmiddle"><?php echo $MODULES[$count]['path']; ?></div>
+        <div class="tcell55 ui-widget-content vmiddle">
+            <div class="table99">
+                <div class="trow">
+                    <div class="tcell15 ui-widget-content h40 vmiddle calign">
                         <button class="smallButton" onClick="showInfoDialog('<?php echo "PHPSESSID=".session_id(); ?>', '<?php echo $MODULES[$count]['moduleName']; ?>');">
                             <img src="images/16x16/info_rhombus.png" border="0">
                         </button>
                     </div>
-                    <div class="tcell15" style="vertical-align:middle;text-align:center;">
+                    <div class="tcell15 ui-widget-content h40 vmiddle calign">
                         <div id="moduleVersion<?php echo $MODULES[$count]['moduleName']; ?>Id"><?php echo trim($MODULES[$count]['version']); ?></div>
                     </div>
-                    <div class="tcell50" style="vertical-align:middle;text-align:center;">
+                    <div class="tcell45 ui-widget-content h40 vmiddle calign">
                         <div id="moduleVersion<?php echo $MODULES[$count]['repository']; ?>Id"><?php echo trim($MODULES[$count]['repository']); ?></div>
                     </div>
-                    <div class="tcell10" style="vertical-align:middle;text-align:center;">
+                    <div class="tcell10 ui-widget-content h40 vmiddle calign">
 <?php
         if($MODULES[$count]['moduleState']) {
 ?>
@@ -247,14 +246,14 @@ for($count = 0; $count < count($MODULES); $count++) {
 ?>
                         <div id="checkModuleResult<?php echo $MODULES[$count]['moduleName']; ?>Id">
                             <div class="table">
-                                <div class="table-row">
-                                    <div class="table-cell" style="vertical-align:middle;">
+                                <div class="trow">
+                                    <div class="tcell" style="vertical-align:middle;">
                                         <img src="images/16x16/new.png"
                                              onClick="updateSelectedModule('<?php echo SID; ?>', '<?php echo $MODULES[$count]['moduleName']; ?>');"
                                              title="Install new Version"
                                              style="cursor:pointer;">
                                     </div>
-                                    <div class="table-cell" style="vertical-align:middle;"><?php echo $moduleConnector->getNewVersion(); ?></div>
+                                    <div class="tcell" style="vertical-align:middle;"><?php echo $moduleConnector->getNewVersion(); ?></div>
                                 </div>
                             </div>
                         </div>
@@ -262,7 +261,7 @@ for($count = 0; $count < count($MODULES); $count++) {
         }
 ?>
                     </div>
-                    <div class="tcell15" style="vertical-align:middle;text-align:center;">
+                    <div class="tcell15 ui-widget-content h40 vmiddle calign">
                         <div class="onoffswitch_small" style="margin-left:auto;margin-right:auto;">
                             <input onClick="toggleModuleActivity('<?php echo SID; ?>',this.id);" type="checkbox" name="<?php echo $MODULES[$count]['moduleName']; ?>"
                                    class="onoffswitch_small-checkbox"

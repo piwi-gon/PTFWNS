@@ -37,11 +37,10 @@ function checkFileType() {
 }
 </script>
 <div id="uploadExtensionContainerId">
-    <form action="" enctype="multipart/form-data" method="POST" onSubmit="return false;">
         <span style="font-weight:bold">Just select the file to install - it has to be a .zip or .tar.gz archive</span>
-        <div style="display:table;width:100%;">
-            <div style="display:table-row;width:100%">
-                <div style="display:table-cell;width:100%">
+        <div class="table99">
+            <div class="trow">
+                <div class="tcell99">
                     <div style="display:none">
                         <input type="file" name="uploadExtensionFile" id="uploadExtensionFileId" onChange="checkFileType();">
                     </div>
@@ -49,19 +48,18 @@ function checkFileType() {
                     <div style="float:left;padding-left:20px;" id="extensionFileNameId"></div>
                 </div>
             </div>
-    </form>
-            <div style="display:table-row;width:100%">
-                <div style="display:table-cell;width:100%">
+            <div class="trow">
+                <div class="tcell99">
                     <div id="checkButtonId" disabled="disabled" class="ui-button ui-state-default ui-corner-all ui-state-disabled" style="padding:10px;width:120px;" onClick="$('#fileArchiveResultId').load('extensions/checkArchive.inc.php');">Check</div>
                 </div>
             </div>
-            <div style="display:table-row;width:100%;">
-                <div style="display:table-cell;width:100%;">
+            <div class="trow">
+                <div class="tcell99">
                     <div id="fileArchiveResultId"></div>
                 </div>
             </div>
-            <div style="display:table-row;width:100%">
-                <div style="display:table-cell;width:100%">
+            <div class="trow">
+                <div class="tcell99">
                     <div class="ui-button ui-state-default ui-corner-all" style="padding:10px;width:120px;" onClick="$('#dialog').dialog('destroy');">Close</div>
                 </div>
             </div>

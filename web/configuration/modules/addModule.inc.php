@@ -23,11 +23,6 @@ if($_SESSION['AGENT']['REPO']['selectedModuleRepositoryIdent']=="") {
 }
 $result = $moduleConnector->getAvailableModules($_SESSION['AGENT']['REPO']['selectedModuleRepositoryIdent']);
 ?>
-<style>
-.table { display:table; }
-.trow  { display:table-row; }
-.tcell { display:table-cell; }
-</style>
 <script>
 function getModuleDetails(sessid) {
     $.ajax({
@@ -48,9 +43,9 @@ function installSelectedModule(sessid) {
     });
 }
 </script>
-<div class="table" style="width:100%!important;">
+<div class="table99">
     <div class="trow">
-        <div class="tcell" style="vertical-align:top;width:35%;">
+        <div class="tcell35 ui-widget-content h40 vtop">
             <select name="moduleToInstall" id="moduleToInstallId" size="10" style="height:300px;width:250px;" onClick="getModuleDetails('<?php echo SID; ?>');">
 <?php
 for ($count = 0; $count < count($result); $count++) {
@@ -62,10 +57,10 @@ for ($count = 0; $count < count($result); $count++) {
             </select><br>
             <div class="ui-button ui-state-default ui-corner-all" style="padding:10px;width:120px;" onClick="$('#dialog').dialog('destroy');">Close</div>
         </div>
-        <div class="tcell" style="vertical-align:top;width:65%!important;">
-            <div class="table" style="width:100%!important;">
+        <div class="tcell65 ui-widget-content h40 vtop">
+            <div class="table99">
                 <div class="trow">
-                    <div class="tcell" style="vertical-align:top;width:100%!important;">
+                    <div class="tcell99 ui-widget-content h40 vtop">
                         <div class="ui-widget-content" style="height:150px;width:100%!important;border:1px solid lightgrey;">
                             Modul-Details
                             <div id="moduleDetailsId" style="height:150px;width:100%!important;background-color:white;overflow:auto;border:1px solid lightgrey;">
@@ -75,7 +70,7 @@ for ($count = 0; $count < count($result); $count++) {
                     </div>
                 </div>
                 <div class="trow">
-                    <div class="tcell" style="vertical-align:top;width:100%!important;">
+                    <div class="tcell99 ui-widget-content h40 vtop">
                         <div class="ui-widget-content" style="height:150px;width:100%!important;border:1px solid lightgrey;">
                             Information
                             <div id="resultModuleInfoId" style="height:133px;width:100%!important;background-color:white;overflow:auto;border:1px solid lightgrey;">&nbsp;
@@ -84,7 +79,7 @@ for ($count = 0; $count < count($result); $count++) {
                     </div>
                 </div>
                 <div class="trow">
-                    <div class="tcell" style="vertical-align:top;width:100%!important;">
+                    <div class="tcell99 ui-widget-content h40 vtop">
                         <div class="ui-widget-content" style="height:200px;width:100%!important;border:1px solid lightgrey;">
                             Installation
                             <div id="resultModuleInstallId" style="height:173px;width:100%!important;background-color:white;overflow:auto;border:1px solid lightgrey;">&nbsp;

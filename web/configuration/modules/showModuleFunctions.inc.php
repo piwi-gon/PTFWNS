@@ -33,34 +33,29 @@ foreach($methods as $method) {
     $modules['function'][] = $funcArray;
 }
 ?>
-<style>
-.table { display: table; width:90%!important; }
-</style>
-<div class="table">
-    <div class="table-row">
-        <div class="table-cell ui-widget-header ui-corner-top">Anzahl Funktionen: <?php echo count($modules['function']); ?></div>
+<div class="table99">
+    <div class="trow">
+        <div class="tcell ui-widget-header ui-corner-top">Anzahl Funktionen: <?php echo count($modules['function']); ?></div>
     </div>
 </div>
-<div class="table">
-    <div class="table-row">
-        <div class="table-cell ui-widget-header">Funktion</div>
-        <div class="table-cell ui-widget-header">Aufrufparamter</div>
+<div class="table99">
+    <div class="trow">
+        <div class="tcell ui-widget-header h40 vtop">Funktion</div>
+        <div class="tcell ui-widget-header h40 vtop">Aufrufparamter</div>
     </div>
 <?php
-for($count = 0; $count < count($modules['function']); $count++) {
-    $class="ui-widget-content";
-    if((($count+1)%2)==0) { $class="ui-widget-content-alt"; }
+foreach($modules['function'] as $func) {
 ?>
-    <div class="table-row">
-        <div class="table-cell <?php echo $class; ?>"><?php echo $modules['function'][$count]['name']; ?></div>
-        <div class="table-cell <?php echo $class; ?>"><?php echo $modules['function'][$count]['param'][0] != "" ? join("<br>", $modules['function'][$count]['param']) : "keine"; ?></div>
+    <div class="trow">
+        <div class="tcell ui-widget-content h40 vtop"><?php echo $func['name']; ?></div>
+        <div class="tcell ui-widget-content h40 vtop"><?php echo $func['param'][0] != "" ? join("<br>", $func['param']) : "keine"; ?></div>
     </div>
 <?php
 }
 ?>
 </div>
-<div class="table">
-    <div class="table-row">
-        <div class="table-cell ui-widget-header ui-corner-bottom">&nbsp;</div>
+<div class="table99">
+    <div class="trow">
+        <div class="tcell ui-widget-header ui-corner-bottom">&nbsp;</div>
     </div>
 </div>

@@ -1,4 +1,14 @@
 <?php
+/**
+ * jqplotData.php
+ *
+ * author: klaus
+ *
+ * created: 19.07.2018
+ * changed: 19.07.2018
+ *
+ */
+
 if($_GET['selectedYear'] != "") {
     $arr = array('Jan' => 1143, 'Feb' => 1232, 'Mar' => 1305, "Apr" => 1200, 'Mai' => 1343, 'Jun' => 1256, 'Jul' => 1134, "Aug" => 1278, 'Sep' => 1222, 'Okt' => 1432, 'Nov' => 1405, "Dez" => 1541);
 } else if($_GET['selectedMonth'] != "") {

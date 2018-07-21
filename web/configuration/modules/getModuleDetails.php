@@ -16,11 +16,6 @@ require_once("../lib/baseStart.php");
 
 $moduleDetails = $moduleConnector->getModuleDetails($_GET['selectedModuleId'], $_SESSION['AGENT']['REPO']['selectedModuleRepositoryIdent']);
 ?>
-<style>
-.table { display:table; }
-.trow  { display:table-row; }
-.tcell { display:table-cell; }
-</style>
 <script>
 $(document).ready(function() {
     $('#resultModuleInfoId').html('<?php echo $moduleDetails[0]['description']; ?>');
@@ -28,22 +23,22 @@ $(document).ready(function() {
 </script>
 <div class="table" style="width:100%!important;">
     <div class="trow">
-        <div class="tcell ui-widget-header" style="width:25%!important;height:40px;">ModuleName</div>
-        <div class="tcell ui-widget-content" style="width:25%!important;height:40px;"><?php echo $moduleDetails[0]['module_name']; ?></div>
-        <div class="tcell ui-widget-header" style="width:25%!important;height:40px;">Version</div>
-        <div class="tcell ui-widget-content" style="width:25%!important;height:40px;"><?php echo $moduleDetails[0]['module_version']; ?></div>
+        <div class="tcell25 ui-widget-header h40 vtop">ModuleName</div>
+        <div class="tcell25 ui-widget-content h40 vtop"><?php echo $moduleDetails[0]['module_name']; ?></div>
+        <div class="tcell25 ui-widget-header h40 vtop">Version</div>
+        <div class="tcell25 ui-widget-content h40 vtop"><?php echo $moduleDetails[0]['module_version']; ?></div>
     </div>
     <div class="trow">
-        <div class="tcell ui-widget-header" style="width:25%!important;height:40px;">Author</div>
-        <div class="tcell ui-widget-content" style="width:25%!important;height:40px;"><?php echo $moduleDetails[0]['author']; ?></div>
-        <div class="tcell ui-widget-header" style="width:25%!important;height:40px;">Created</div>
-        <div class="tcell ui-widget-content" style="width:25%!important;height:40px;"><?php echo substr($moduleDetails[0]['created'], 0, 10); ?></div>
+        <div class="tcell25 ui-widget-header h40 vtop">Author</div>
+        <div class="tcell25 ui-widget-content h40 vtop"><?php echo $moduleDetails[0]['author']; ?></div>
+        <div class="tcell25 ui-widget-header h40 vtop">Created</div>
+        <div class="tcell25 ui-widget-content h40 vtop"><?php echo substr($moduleDetails[0]['created'], 0, 10); ?></div>
     </div>
     <div class="trow">
-        <div class="tcell ui-widget-header" style="width:25%!important;height:40px;">Released /<br>changed</div>
-        <div class="tcell ui-widget-content" style="width:25%!important;height:40px;"><?php echo substr($moduleDetails[0]['changed'], 0, 10); ?></div>
-        <div class="tcell ui-widget-header" style="width:25%!important;height:40px;">Action</div>
-        <div class="tcell ui-widget-content" style="width:25%!important;height:40px;">
+        <div class="tcell25 ui-widget-header h40 vtop">Released /<br>changed</div>
+        <div class="tcell25 ui-widget-content h40 vtop"><?php echo substr($moduleDetails[0]['changed'], 0, 10); ?></div>
+        <div class="tcell25 ui-widget-header h40 vtop">Action</div>
+        <div class="tcell25 ui-widget-content h40 vtop">
             <button onClick="installSelectedModule('<?php echo "PHPSESSID=" . session_id(); ?>');" class="ui-state-default ui-corner-all">&nbsp;Installieren&nbsp;</button>
         </div>
     </div>

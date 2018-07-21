@@ -1,4 +1,14 @@
 <?php
+/**
+ * soapTest.php
+ *
+ * author: klaus
+ *
+ * created: 19.07.2018
+ * changed: 19.07.2018
+ *
+ */
+
 include("sessionStart.php");
 ini_set("display_errors", 1);
 $base->setLanguage("de_DE");

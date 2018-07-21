@@ -1,4 +1,14 @@
 <?php
+/**
+ * externalLibs.php
+ *
+ * author: klaus
+ *
+ * created: 19.07.2018
+ * changed: 19.07.2018
+ *
+ */
+
 include("sessionStart.php");
 //echo "<pre>"; print_r($_SESSION); echo "</pre>";
 // trying to get an external object

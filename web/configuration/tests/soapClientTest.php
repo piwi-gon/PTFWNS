@@ -20,15 +20,10 @@ $optionArray = array(
        "trace" => 1
       );
 ?>
-<style>
-.table { display:table; width:100%!important; }
-.trow  { display:table-row; }
-.tcell { display:table-cell; }
-</style>
 <div id="dialogWS"></div>
-<div class="table">
+<div class="table99">
     <div class="trow">
-        <div class="tcell">
+        <div class="tcell99">
         <button class="ui-corner-all ui-state-default"
            onClick="$('#dialogWS').hide();$('#dialogWS').dialog({ height: 500, width: 900}).load('<?php echo dirname($_SERVER['PHP_SELF']); ?>/showWS.php?<?php echo session_name()."=".session_id();?>');$('#dialogWS').show();">
            <div style="padding:5px;">List Webservices</div>

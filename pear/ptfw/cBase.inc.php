@@ -164,6 +164,16 @@ class cBase {
     }
 
     /**
+     * class for loading all libraries via autoloader (spl_autoload)
+     */
+    public function getPSRClassLoader() {
+        include_once(dirname(__FILE__) . DS . "base" . DS . "update" . DS . "current" . DS ."cUpdateChecker.inc.php");
+        $_psrClassLoaderObject = new Base\PSR\cPSRClassLoader();
+        if(!is_object($_psrClassLoaderObject)) { die("no PSRClassLoader-class installed - please contact your administrator"); }
+        return $_psrClassLoaderObject;
+    }
+
+    /**
      * here is where the magic starts - the __call-method of php is widely used
      * to call a class
      *

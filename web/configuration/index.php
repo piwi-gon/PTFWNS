@@ -23,6 +23,7 @@ if(isset($_SESSION['SCRIPT']['_ONDOCUMENTREADY'])) { unset($_SESSION['SCRIPT']['
     <title>PTFW - Piwi Gon Technologies Framework</title>
     <link rel="stylesheet" href="css/jqueryui/jquery-ui.css">
     <link rel="stylesheet" href="css/jquery.messagebox.css">
+    <link rel="stylesheet" href="css/w3.css">
     <link rel="stylesheet" href="css/base.css">
     <script type="text/javascript" src="lib/js/jquery/jquery.js"></script>
     <script type="text/javascript" src="lib/js/jquery/jquery-ui.js"></script>
@@ -63,7 +64,7 @@ $(document).ready(function() {
                         <li><a href="javascript:preventDefault();return false;" onClick="$('#mainId').html('').load('phpinfo.php');">PHPInfo</a></li>
                         <li><a href="javascript:preventDefault();return false;" onClick="$('#mainId').html('').load('tests/index.php?<?php echo SID; ?>');">Tests</a></li>
                     </ul>
-                    <div id="mainId" style="height:600px;width:90%!important;margin-right:auto;margin-left:auto;"></div>
+                    <div id="mainId" style="height:600px;width:90%!important;margin:0 auto;overflow:auto;"></div>
                 </div>
             </div>
         </div>

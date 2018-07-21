@@ -18,6 +18,7 @@ require_once("../lib/uploadConstants.php");
 $EXTENSIONS = $base->getConfiguration()->getListOfExtensions();
 $extOK      = ($_SESSION['_ENV']['USE_EXTENSIONS'] ? " checked=\"checked\"" : "");
 $extKO      = (!$_SESSION['_ENV']['USE_EXTENSIONS'] ? " checked=\"checked\"" : "");
+if(!is_array($EXTENSIONS)) { $EXTENSIONS = array(); }
 ?>
 <link rel="stylesheet" href="css/monthselector.css">
 <script src="lib/js/jquery.monthselector.widget.js"></script>
@@ -59,28 +60,28 @@ function toggleExtensionActivity(sessId, fieldId) {
     });
 }
 </script>
-<div class="container" style="display:table;">
-    <div class="table-row">
-        <div class="table-header-cell ui-state-default ui-corner-top">
+<div class="container table99">
+    <div class="trow">
+        <div class="tcell ui-widget-header ui-corner-top">
             <button class="smallButton" onClick="createInstallExtDialog('<?php echo "PHPSESSID=".session_id(); ?>');">
                 <img src="images/16x16/page_white.png" border="0">
             </button>
         </div>
-        <div class="table-header-cell ui-state-default" style="text-align:center">
+        <div class="tcell ui-widget-header" style="text-align:center">
             Extensions installed in: <?php echo BASE_DIR . DS . "extensions" . DS; ?>
         </div>
-        <div class="table-header-cell ui-state-default" style="text-align:center">
+        <div class="tcell ui-widget-header" style="text-align:center">
             Num of Extensions currently installed: <?php echo count($EXTENSIONS); ?>
         </div>
-        <div class="table-header-cell ui-state-default ui-corner-tr" style="text-align:right">
+        <div class="tcell ui-widget-header ui-corner-tr vmiddle">
             <div class="table100">
                 <div class="trow">
                     <div class="tcell100">
                         <div class="table100"  style="text-align:right">
                             <div class="trow">
-                                <div class="tcell" style="width:80%;text-align:right;">Use Extensions&nbsp;&nbsp;&nbsp;</div>
-                                <div class="tcell" style="width:20%;text-align:center;vertical-align:middle;">
-                                    <div class="onoffswitch" style="margin-left:auto;margin-right:auto;margin-top:-7px;">
+                                <div class="tcell60 lalign h40">Use Extensions&nbsp;&nbsp;&nbsp;</div>
+                                <div class="tcell40 calign vmiddle">
+                                    <div class="onoffswitch" style="margin-left:auto;margin-right:auto;">
                                         <input onClick="checkIfChecked('USE_EXTENSIONS', this.id);" type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switchOnOffUseExtensionsId" <?php echo $extOK ? "checked" : ""; ?>>
                                         <label class="onoffswitch-label" for="switchOnOffUseExtensionsId">
                                             <span class="onoffswitch-inner"></span>
@@ -95,32 +96,32 @@ function toggleExtensionActivity(sessId, fieldId) {
         </div>
     </div>
 </div>
-<div class="container" style="display:table;">
-    <div class="table-row">
-        <div class="table-header-cell h40 ui-widget-header" style="width:10%;">No</div>
-        <div class="table-header-cell h40 ui-widget-header" style="width:10%;">Ident</div>
-        <div class="table-header-cell h40 ui-widget-header" style="width:20%;">Filename</div>
-        <div class="table-header-cell h40 ui-widget-header" style="width:25%;">Path (relative to extension-install-path)</div>
-        <div class="table-header-cell h40 ui-widget-header" style="width:5%;">Only<br>Load</div>
-        <div class="table-header-cell h40 ui-widget-header" style="width:10%;">Version</div>
-        <div class="table-header-cell h40 ui-widget-header" style="width:15%;text-align:center;">Actions</div>
-        <div class="table-header-cell h40 ui-widget-header" style="width:5%;">Active</div>
+<div class="container table99">
+    <div class="trow">
+        <div class="tcell10 h40 ui-widget-header">No</div>
+        <div class="tcell10 h40 ui-widget-header">Ident</div>
+        <div class="tcell20 h40 ui-widget-header">Filename</div>
+        <div class="tcell25 h40 ui-widget-header">Path (relative to extension-install-path)</div>
+        <div class="tcell5 h40 ui-widget-header">Only<br>Load</div>
+        <div class="tcell10 h40 ui-widget-header">Version</div>
+        <div class="tcell15 h40 ui-widget-header calign">Actions</div>
+        <div class="tcell5 h40 ui-widget-header">Active</div>
     </div>
 <?php
 $extCount=0;
 for($count = 0; $count < count($EXTENSIONS); $count++) {
     $extCount++;
-    $state  = ((($count+1)%2)==0) ? "ui-widget-content" : "ui-widget-content-alt";
+    $state  = ((($count+1)%2)==0) ? "ui-widget-content" : "ui-widget-content";
 ?>
-    <div class="table-row">
-        <div class="table-cell <?php echo $state; ?>" style="width:10%;"><?php echo sprintf("%03d", ($extCount)); ?></div>
-        <div class="table-cell <?php echo $state; ?>" style="width:10%;"><?php echo trim($EXTENSIONS[$count]['ident']); ?></div>
-        <div class="table-cell <?php echo $state; ?>" style="width:20%;"><?php echo $EXTENSIONS[$count]['name']; ?></div>
-        <div class="table-cell <?php echo $state; ?>" style="width:25%;"><?php echo $EXTENSIONS[$count]['path']; ?></div>
-        <div class="table-cell <?php echo $state; ?>" style="width:5%;">
+    <div class="trow">
+        <div class="tcell10 ui-widget-content"><?php echo sprintf("%03d", ($extCount)); ?></div>
+        <div class="tcell10 ui-widget-content"><?php echo trim($EXTENSIONS[$count]['ident']); ?></div>
+        <div class="tcell20 ui-widget-content"><?php echo $EXTENSIONS[$count]['name']; ?></div>
+        <div class="tcell25 ui-widget-content"><?php echo $EXTENSIONS[$count]['path']; ?></div>
+        <div class="tcell5 ui-widget-content">
             <input type="checkbox" name="onlyLoad<?php echo trim($EXTENSIONS[$count]['ident']); ?>" id="onlyLoad<?php echo trim($EXTENSIONS[$count]['ident']); ?>Id" value="true"<?php echo ($EXTENSIONS[$count]['additional'] == "true" ? " checked=\"checked\"":""); ?>>
         </div>
-        <div class="table-cell <?php echo $state; ?>" style="width:10%;">
+        <div class="tcell10 ui-widget-content">
             <div class="table">
                 <div class="trow">
                     <div class="tcell">
@@ -128,19 +129,19 @@ for($count = 0; $count < count($EXTENSIONS); $count++) {
                     </div>
                 </div>
             </div>
-        <div class="actionList table-cell <?php echo $state; ?>" style="width:15%;">
-            <div style="display:table;width:100%!important;">
-                <div style="display:table-row">
-                    <div style="display:table-cell">
-                        <button class="ui-widget-header ui-corner-all" style="padding:5px;" onClick="createInstallExtDialog('<?php echo "PHPSESSID=".session_id(); ?>');">
+        <div class="actionList tcell15 ui-widget-content">
+            <div class="table99">
+                <div class="trow">
+                    <div class="tcell">
+                        <button style="width:50px;padding:5px;" onClick="createInstallExtDialog('<?php echo "PHPSESSID=".session_id(); ?>');">
                             <img src="images/16x16/update.png" border="0">
                         </button>
                     </div>
 <?php
 if($EXTENSIONS[$count]['additional'] != "") {
 ?>
-                    <div style="display:table-cell">
-                        <button class="ui-widget-header ui-corner-all" style="padding:5px;" onClick="<?php echo $editURL; ?>">
+                    <div class="tcell">
+                        <button style="width:50px;padding:5px;" onClick="<?php echo $editURL; ?>">
                             <img src="images/16x16/pencil.png" border="0">
                         </button>
                     </div>
@@ -154,17 +155,10 @@ if($EXTENSIONS[$count]['additional'] != "") {
                 </div>
             </div>
         </div>
-        <div class="actionList table-cell <?php echo $state; ?>" style="width:15%;vertical-align:middle;text-align:center;">
-            <!-- <div class="onoffswitch_small" style="margin-left:auto;margin-right:auto;"> -->
+        <div class="actionList tcell5 ui-widget-content">
                 <input onClick="toggleExtensionActivity('<?php echo SID; ?>',this.id);" type="checkbox" name="<?php echo trim($EXTENSIONS[$count]['ident']); ?>"
                        value="<?php echo trim($EXTENSIONS[$count]['ident']); ?>"
                        id="module<?php echo trim($EXTENSIONS[$count]['ident']); ?>Id" <?php echo ($EXTENSIONS[$count]['active']=="true" ? "checked" : ""); ?>>
-                <!--
-                <label class="onoffswitch_small-label" for="module<?php echo trim($EXTENSIONS[$count]['ident']); ?>Id">
-                    <span class="onoffswitch_small-inner"></span>
-                </label>
-            </div>
-            -->
         </div>
     </div>
 <?php
