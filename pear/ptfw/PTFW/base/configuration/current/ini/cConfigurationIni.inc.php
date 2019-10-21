@@ -8,7 +8,14 @@
  * created: 09.05.2015
  * changed: 09.05.2015
  *
- * purpose:
+ * purpose: this class is used to load the configuration
+ *          of this framework-based installed modules and
+ *          extensions
+ *
+ *          it uses the files modules.idx and extension.idx
+ *
+ *          for further usage and installation it uses
+ *          repositories.idx too
  *
  */
 
@@ -69,13 +76,6 @@ class cConfigurationIni extends \PTFW\Base\Config\cConfiguration {
                                     "moduleState"   => $state,
                                     "repository"    => $this->_getRepositoryFromManifest(str_replace("/current", "", dirname($lineTokens[0])) . DS . "manifest")
                 );
-
-//                 $tokens = explode("|", $lines[$count]);
-//                 $state  = ((($count+1)%2)==0) ? "ui-widget-content" : "ui-widget-content-alt";
-//                 $moduleName = str_replace(".inc.php", "", substr(basename($tokens[0]),1));
-//                 $moduleState = $moduleConnector->checkIfActual($moduleName, trim($tokens[1]));
-//                 $MODARRAY[] = array("name"=>basename($tokens[0]), "path"=>dirname($tokens[0]), "moduleName"=>$moduleName,
-//                                     "version"=>$tokens[1], "additional" => $tokens[3], "moduleState" => $moduleState, "active"=>$tokens[2]);
                 $numOfExtensions++;
             }
         }

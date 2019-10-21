@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+.item1 {
+    grid-area: menunav;
+    text-align:center;
+}
+.item2 {
+    grid-area: content;
+    text-align:center;
+    vertical-align:top;
+}
+.item3 {
+    grid-area: info;
+    text-align:center;
+}
+
+.grid3cols {
+    display:grid;
+    grid-template-columns: 200px auto 150px;
+    grid-template-areas: 'menunav content info';
+    grid-gap:5px;
+}

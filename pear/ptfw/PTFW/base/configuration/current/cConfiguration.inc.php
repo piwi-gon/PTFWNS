@@ -15,7 +15,7 @@
 
 namespace PTFW\Base\Config;
 
-class cConfiguration extends \PTFW\BASE {
+class cConfiguration {
 
     const VERSION = "v1.0.0";
 

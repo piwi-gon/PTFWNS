@@ -9,23 +9,24 @@
  * changed: 01.05.2015
  *
  * purpose: this class checks if there is a new
- * base-version available
- * the repository for this could be everywhere
- * where you wanted it but at first at the place
- * this framework comes from
+ *          base-version available
  *
- * the repository is editable from the frontend
+ *          the repository for this could be everywhere
+ *          where you wanted it but at first at the place
+ *          this framework comes from
  *
- * if you are deciding to develop your own base so make
- * sure the correct repository is connected
- * otherwise your changes will be lost and the base-version
- * from the place this framework comes from will be installed
+ *          the repository is editable from the frontend
  *
- * there can be only one system-repository
+ *          if you are deciding to develop your own base so make
+ *          sure the correct repository is connected
+ *          otherwise your changes will be lost and the base-version
+ *          from the place this framework comes from will be installed
  *
- * on the other hand there can be more than one repository
- * for the modules - but be careful - same name of a module
- * could cause a problem in installing it if no namespace is used
+ *          there can be only one system-repository
+ *
+ *          on the other hand there can be more than one repository
+ *          for the modules - but be careful - same name of a module
+ *          could cause a problem in installing it if no namespace is used
  *
  */
 

@@ -24,37 +24,95 @@
 
 namespace PTFW;
 
+/**
+ * the Debug-Class
+ * is to be used to store and display some debug-messages
+ */
+use PTFW\Base\Debug\cDebug;
+/**
+ * the configiuration-class
+ */
 use PTFW\Base\Config\cConfiguration;
+/**
+ * the language-class
+ */
 use PTFW\Base\Lang\cLanguage;
-use PTFW\Base\Module\Extension\cExtensionClass;
-use PTFW\Base\Module\File\cBaseFile;
+/**
+ * the module-loader-class
+ */
 use PTFW\Base\Module\ModuleClass\cModuleClass;
+/**
+ * the extension-loader-class
+ */
+use PTFW\Base\Module\Extension\cExtensionClass;
+/**
+ * the file-class
+ */
+use PTFW\Base\Module\File\cBaseFile;
+/**
+ * the tar-class
+ */
 use PTFW\Base\Module\Tar\cBaseTar;
+/**
+ * the update-checker-class
+ */
 use PTFW\Base\Update\Checker\cUpdateChecker;
 
+/**
+ * just a define to use DS instead of DIRECTORY_SEPARATOR
+ */
 @define("DS", DIRECTORY_SEPARATOR);
+
+/**
+ * just a define to use PS instead of PATH_SEPARATOR
+ */
+@define("PS", PATH_SEPARATOR);
+
+/**
+ * this define is to be used to set to use an ini-file or not
+ */
 @define("isIni", true);
+
+/**
+ * this defines the base-directory where the framewrok lives in
+ */
 @define("_BASEDIR_", dirname(__FILE__));
 
 class cBase {
 
     const _VERSION = "v1.0.1";
 
-    private $_includePath = "";
-    private $_updateCheckerObject;
-    private $_moduleObject;
-    private $_extObject;
-    private $_MODS = array();
-    private $_DEBUG;
 
+    private $_includePath = "";
+
+    private $_debugObject = null;
+    private $_languageObject = null;
+    private $_configurationObject = null;
+    private $_moduleObject = null;
+    private $_debugObject = null;
+    private $_extenstionObject = null;
+    private $_fileObject = null;
+    private $_tarObject = null;
+    private $_updateCheckObject = null;
+    private $_psr4Object = null;
+
+    private $_MODS = array();
+
+    /**
+     * the constructor loads base-classes and configuration
+     *
+     * it registeres the built-in shutdown-function too
+     *
+     */
     public function __construct() {
-        include_once(_BASEDIR_ . DS . "base" . DS . "debug" . DS . "current" . DS . "cDebug.inc.php");
-        if(!is_object($this->_DEBUG)) {
-            $debugObject = new Base\Debug\cDebug();
-            if(!is_object($debugObject)) { die("no debug-class installed - please contact your administrator"); }
-            $this->_DEBUG = $debugObject;
+        register_shutdown_function(array($this, "shutDown"));
+    }
+
+    public function shutDown() {
+        $error = error_get_last();
+        if ($error['type'] === E_ERROR) {
+            $this->_formatError($error["type"], $error["message"], $error["file"], $error["line"]);
         }
-        $this->getConfiguration()->loadConfiguration();
     }
 
     /**
@@ -63,10 +121,7 @@ class cBase {
      * to handle debug-messages
      */
     public function getDebug() {
-        include_once(dirname(__FILE__) . DS . "base" . DS . "debug" . DS . "current" . DS . "cDebug.inc.php");
-        $debugObject = new Base\Debug\cDebug();
-        if(!is_object($debugObject)) { die("no debug-class installed - please contact your administrator"); }
-        return $debugObject;
+        return $this->_debugObject;
     }
 
     /**
@@ -77,10 +132,7 @@ class cBase {
      * @return cConfiguration
      */
     public function getConfiguration() {
-        include_once(dirname(__FILE__) . DS . "base" . DS . "configuration" . DS . "current" . DS ."cConfiguration.inc.php");
-        $_moduleObject = new Base\Config\cConfiguration();
-        if(!is_object($_moduleObject)) { die("no config-class installed - please contact your administrator"); }
-        return $_moduleObject;
+        return $this->_configurationObject;
     }
 
     /**
@@ -91,10 +143,7 @@ class cBase {
      * @return cLanguage
      */
     public function getLanguage() {
-        include_once(dirname(__FILE__) . DS . "base" . DS . "language" . DS . "current" . DS ."cLanguage.inc.php");
-        $_moduleObject = new Base\Lang\cLanguage();
-        if(!is_object($_moduleObject)) { die("no language-class installed - please contact your administrator"); }
-        return $_moduleObject;
+        return $this->_languageObject;
     }
 
     /**
@@ -105,11 +154,7 @@ class cBase {
      * @return cModuleClass
      */
     public function getModuleClass() {
-        include_once(dirname(__FILE__) . DS . "base" . DS . "module" . DS . "current" . DS ."cModuleClass.inc.php");
-        $_moduleObject = new Base\Module\ModuleClass\cModuleClass();
-        if(!is_object($_moduleObject)) { die("no module-class installed - please contact your administrator - ".
-                                             "maybe you are not allowed to install new modules"); }
-        return $_moduleObject;
+        return $this->_moduleObject;
     }
 
     /**
@@ -120,11 +165,7 @@ class cBase {
      * @return cExtensionClass
      */
     public function getExtensionClass() {
-        include_once(dirname(__FILE__) . DS . "base" . DS . "module" . DS . "current" . DS ."cExtensionClass.inc.php");
-        $_extObject = new Base\Module\Extension\cExtensionClass();
-        if(!is_object($_extObject)) { die("no extension-class installed - please contact your administrator - ".
-                                          "maybe you are not allowed to install new extensions"); }
-        return $_extObject;
+        return $this->_extenstionObject;
     }
 
     /**
@@ -133,10 +174,7 @@ class cBase {
      * @return cBaseFile
      */
     public function getBaseFile() {
-        include_once(dirname(__FILE__) . DS . "base" . DS . "module" . DS . "current" . DS ."cBaseFile.inc.php");
-        $_moduleObject = new Base\Module\File\cBaseFile();
-        if(!is_object($_moduleObject)) { die("no base-file-class installed - please contact your administrator"); }
-        return $_moduleObject;
+        return $this->_fileObject;
     }
 
     /**
@@ -145,10 +183,7 @@ class cBase {
      * @return cBaseTar
      */
     public function getBaseTar() {
-        include_once(dirname(__FILE__) . DS . "base" . DS . "module" . DS . "current" . DS ."cBaseTar.inc.php");
-        $_moduleObject = new Base\Module\Tar\cBaseTar();
-        if(!is_object($_moduleObject)) { die("no base-tar-class installed - please contact your administrator"); }
-        return $_moduleObject;
+        return $this->_tarObject;
     }
 
     /**
@@ -157,20 +192,14 @@ class cBase {
      * @return cUpdateChecker
      */
     public function getUpdateChecker() {
-        include_once(dirname(__FILE__) . DS . "base" . DS . "update" . DS . "current" . DS ."cUpdateChecker.inc.php");
-        $_updateCheckerObject = new Base\Update\Checker\cUpdateChecker();
-        if(!is_object($_updateCheckerObject)) { die("no updatechecker-class installed - please contact your administrator"); }
-        return $_updateCheckerObject;
+        return $this->_updateCheckObject;
     }
 
     /**
      * class for loading all libraries via autoloader (spl_autoload)
      */
     public function getPSRClassLoader() {
-        include_once(dirname(__FILE__) . DS . "base" . DS . "update" . DS . "current" . DS ."cUpdateChecker.inc.php");
-        $_psrClassLoaderObject = new Base\PSR\cPSRClassLoader();
-        if(!is_object($_psrClassLoaderObject)) { die("no PSRClassLoader-class installed - please contact your administrator"); }
-        return $_psrClassLoaderObject;
+        return $this->_psr4Object;
     }
 
     /**
@@ -193,24 +222,25 @@ class cBase {
             $this->getDebug()->deb("using preloaded class");
             $this->_includePath = $_SESSION['_MOD'][$className]['path'];
             require_once($this->_includePath . DS . $className . ".inc.php");
-            $relfectObj = new \ReflectionClass($className);
-            echo "RName: " . $reflectObj->getNamespaceName()."\n";
+            $reflectObj = new \ReflectionClass($className);
+            die("RName: " . $reflectObj->getNamespaceName()."\n");
             exit;
             return unserialize($_SESSION['_MOD'][$className]['class']);
         /**
-         * if not - try to check if name is eistant in the basic-classes
+         * if not - try to check if name is existant in the basic-classes
+         * if aoutloading is working nothing else has to be done
          */
         } else {
             if(isset($this->_includePath)) { unset($this->_includePath); $this->_includePath = ""; }
             $className = $this->_queryBaseClass($method);
             if($className != null) {
                 require_once($this->_includePath . DS . $className.".inc.php");
-                $content = file_get_contents($this->_includePath . DS . $className.".inc.php");
-                $nameSpace = $this->_byToken($content);
-                $class = $nameSpace."\\".$className;
+//                 $content = file_get_contents($this->_includePath . DS . $className.".inc.php");
+//                 $nameSpace = $this->_byToken($content);
+//                 $class = $nameSpace."\\".$className;
+                $class = $className;
                 $obj = new $class();
                 if(is_object($obj)) {
-                    //$this->_registerBASEObject($obj);
                     return $obj;
                 } else {
                     echo "object not instantiated (searched for: " . $this->_includePath . DS . $className . ".inc.php".")\n";
@@ -234,80 +264,103 @@ class cBase {
 
     public function setLanguage($language) {
         $lng = $this->getLanguage();
-        if(!is_object($lng)) { $this->_DEBUG->deb(basename(__FILE__) . ":" . "Language-class could not be loded"); }
-        else                 { $lng->setLanguage($language);                    }
+        if(!is_object($lng)) { $this->getDebug()->deb(basename(__FILE__) . ":" . "Language-class could not be loded"); }
+        else                 { $lng->setLanguage($language); }
     }
 
     public function i18n($ident) {
         $lng = $this->getLanguage();
-        if(!is_object($lng)) { $this->_DEBUG->deb(basename(__FILE__) . ":" . "Language-class could not be loaded"); }
-        else                 { $lng->i18n($ident);                    }
+        if(!is_object($lng)) { $this->getDebug()->deb(basename(__FILE__) . ":" . "Language-class could not be loaded"); }
+        else                 { return $lng->i18n($ident); }
     }
 
     public function getExtension($extName) {
-        if($extName == "" || strlen($extName) == 0) { $this->_DEBUG->deb("Nothing found"); return null; }
-        $this->_DEBUG->deb("Num of extensions found: " . count($_SESSION['_EXT']));
+        if($extName == "" || strlen($extName) == 0) { $this->getDebug()->deb("Nothing found"); return null; }
+        $this->getDebug()->deb("Num of extensions found: " . count($_SESSION['_EXT']));
         $ext = $_SESSION['_EXT'][$extName]['filename'];
         if(!$_SESSION['_EXT'][$extName]['active']) {
-            $this->_DEBUG->deb(basename(__FILE__) . ":" . "required extension '" . $extName . "' not present or deactivated ");
-            echo(basename(__FILE__) . ":" . "required extension '" . $extName . "' not present or deactivated\n");
+            $this->getDebug()->deb(basename(__FILE__) . ":" . "required extension '" . $extName . "' deactivated ");
+            echo(basename(__FILE__) . ":" . "required extension '" . $extName . "' deactivated\n");
         } else if(file_exists($ext)) {
-            $this->_DEBUG->deb(basename(__FILE__) . ":" . "required extension '" . $extName . "' found!");
+            $this->getDebug()->deb(basename(__FILE__) . ":" . "required extension '" . $extName . "' found!");
             include($ext);
             if($_SESSION['_EXT'][$extName]['additional']=="false") {
                 /**
                  * now lets check if there is any namespace in
                  * selected extension
                  */
-                /*
-                if(class_exists($etxName)) {
-                    $obj = new $extName();
-                } else {
-                */
-                    $content = file_get_contents($ext);
-                    $className = str_replace(".php", "", basename($ext));
-                    $nameSpace = $this->_byToken($content);
-                    if($nameSpace != "") {
-                        $class = $nameSpace."\\".$className;
-                    }
-    //                echo "determined className: '" . $class . "'\n";
-                    $obj = new $class();
-                // }
+                $content = file_get_contents($ext);
+                $className = str_replace(".php", "", basename($ext));
+                $nameSpace = $this->_byToken($content);
+                if($nameSpace != "") {
+                    $class = $nameSpace."\\".$className;
+                }
+                $obj = new $class();
                 if($obj != null) { return $obj; }
             }
         } else {
-            $this->_DEBUG->deb(basename(__FILE__) . ":" . "required extension '" . $extName . "' not found (path: " . $ext .")");
+            $this->getDebug()->deb(basename(__FILE__) . ":" . "required extension '" . $extName . "' not found (path: " . $ext .")");
             echo(basename(__FILE__) . ":" . "required extension '" . $extName . "' not found (path: " . $ext .")");
         }
         return null;
     }
 
     public function getExtensionLibrary($extName) {
-        if($extName == "" || strlen($extName) == 0) { $this->_DEBUG->deb("Nothing found"); return null; }
+        if($extName == "" || strlen($extName) == 0) { $this->getDebug()->deb("Nothing found"); return null; }
         $ext = $_SESSION['_EXT'][$extName]['filename'];
         if(!$_SESSION['_EXT'][$extName]['active']) {
-            $this->_DEBUG->deb(basename(__FILE__) . ":" . "required extension '" . $extName . "' not present or deactivated ");
+            $this->getDebug()->deb(basename(__FILE__) . ":" . "required extension '" . $extName . "' not present or deactivated ");
             echo(basename(__FILE__) . ":" . "required extension '" . $extName . "' not present or deactivated ");
         } else if(file_exists($ext)) {
-            $this->_DEBUG->deb(basename(__FILE__) . ":" . "required extension '" . $extName . "' found!");
+            $this->getDebug()->deb(basename(__FILE__) . ":" . "required extension '" . $extName . "' found!");
             require_once($ext);
             return true;
         } else {
-            $this->_DEBUG->deb(basename(__FILE__) . ":" . "required extension '" . $extName . "' not found (path: " . $ext .")");
+            $this->getDebug()->deb(basename(__FILE__) . ":" . "required extension '" . $extName . "' not found (path: " . $ext .")");
         }
         return false;
     }
 
     public function getExtensionDir($extName) {
-        if($extName == "" || strlen($extName) == 0) { $this->_DEBUG->deb("Nothing found"); return ""; }
+        if($extName == "" || strlen($extName) == 0) { $this->getDebug()->deb("Nothing found"); return ""; }
         $ext = $_SESSION['_EXT'][$extName];
         return dirname($ext);
     }
 
-    private function _registerBASEObject(BASE $theObject) {
-        if($theObject && $theObject instanceof BASE) {
-            $_SESSION['_MOD'] += array(get_class($theObject)=>array("class"=>serialize($theObject), "path"=>$this->_includePath));
-        }
+    /**
+     * this function loads all necessary classes to work with this framework
+     *
+     * it includes all available classes and stops if anything went wrong
+     */
+    private function _loadBaseClasses() {
+        $this->_debugObject = new cDebug();
+        if(!is_object($this->_debugObject)) { die("no debug-class installed - please contact your administrator"); }
+
+        $this->_configurationObject = new cConfiguration();
+        if(!is_object($this->_configurationObject)) { die("no config-class installed - please contact your administrator"); }
+
+        $this->_languageObject = new cLanguage();
+        if(!is_object($this->_languageObject)) { die("no language-class installed - please contact your administrator"); }
+
+        $this->_moduleObject = new cModuleClass();
+        if(!is_object($this->_moduleObject)) { die("no module-class installed - please contact your administrator - ".
+                                                   "maybe you are not allowed to install new modules"); }
+
+        $this->_extenstionObject = new cExtensionClass();
+        if(!is_object($this->_extenstionObject)) { die("no extension-class installed - please contact your administrator - ".
+                                                       "maybe you are not allowed to install new extensions"); }
+
+        $this->_fileObject= new cBaseFile();
+        if(!is_object($this->_fileObject)) { die("no base-file-class installed - please contact your administrator"); }
+
+        $this->_tarObject = new cBaseTar();
+        if(!is_object($this->_tarObject)) { die("no base-tar-class installed - please contact your administrator"); }
+
+        $this->_updateCheckObject = new cUpdateChecker();
+        if(!is_object($this->_updateCheckObject)) { die("no updatechecker-class installed - please contact your administrator"); }
+
+        $this->_psr4Object = new Base\PSR\cPSRClassLoader();
+        if(!is_object($this->_psr4Object)) { die("no PSRClassLoader-class installed - please contact your administrator"); }
     }
 
     /**
@@ -372,15 +425,16 @@ class cBase {
         }
     }
 
-    private function _byRegexp($src) {
-        if (preg_match('#^namespace\s+(.+?);$#sm', $src, $m)) {
-            return $m[1];
-        }
-        return null;
-    }
-
-    private function _byToken ($src) {
-        $tokens = token_get_all($src);
+    /**
+     * this function tries to determine the namespace
+     *
+     * works in every situation
+     *
+     * @param string $file
+     * @return NULL|string
+     */
+    private function _byToken ($file) {
+        $tokens = token_get_all($file);
         $count = count($tokens);
         $i = 0;
         $namespace = '';
@@ -407,17 +461,36 @@ class cBase {
             return $namespace;
         }
     }
-}
 
-abstract class BASE extends cBase {
-    protected $name = null;
-    protected $object = null;
-
-    public function getName() {
-        return $this->name;
+    private function _formatError($errno, $errstr, $errfile, $errline) {
+        $trace = print_r( debug_backtrace( false ), true );
+        $content = '
+        <link rel="stylesheet" href="css/jqueryui/jquery-ui.css">
+        <link rel="stylesheet" href="css/jquery.messagebox.css">
+        <link rel="stylesheet" href="css/w3.css">
+        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="css/grid.css">
+        <div class="table99">
+            <div class="trow">
+                <div class="tcell20 ui-widget-header h40 f12b vtop">Error</div>
+                <div class="tcell80 ui-widget-content f12 vtop" style="height:120px;overflow:auto;"><pre>'.$errstr.'</pre></div>
+            </div>
+            <div class="trow">
+                <div class="tcell20 ui-widget-header h40 f12b vtop">ErrorNo.</div>
+                <div class="tcell80 ui-widget-content f12 vtop"><pre>'.$errno.'</pre></div>
+            </div>
+            <div class="trow">
+                <div class="tcell20 ui-widget-header h40 f12b vtop">File / Line</div>
+                <div class="tcell80 ui-widget-content f12 vtop">'.$errfile.' on Line '.$errline.'</div>
+            </div>
+            <div class="trow">
+                <div class="tcell20 ui-widget-header h40 f12b vtop" style="height:120px;overflow:auto;">Back-Trace</div>
+                <div class="tcell80 ui-widget-content f12 vtop"><div style="width:100%;height:240px;overflow:auto;"><pre>'.$trace.'</pre></div></div>
+            </div>
+        </div>';
+        echo $content;
     }
 
-    abstract function baseRun();
 }
 
 abstract class BASESOAP extends \SoapServer {

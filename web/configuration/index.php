@@ -25,6 +25,7 @@ if(isset($_SESSION['SCRIPT']['_ONDOCUMENTREADY'])) { unset($_SESSION['SCRIPT']['
     <link rel="stylesheet" href="css/jquery.messagebox.css">
     <link rel="stylesheet" href="css/w3.css">
     <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/grid.css">
     <script type="text/javascript" src="lib/js/jquery/jquery.js"></script>
     <script type="text/javascript" src="lib/js/jquery/jquery-ui.js"></script>
     <script type="text/javascript" src="lib/js/jquery.messagebox.widget.js"></script>
@@ -43,15 +44,47 @@ $(document).ready(function() {
 </script>
 <body>
 <div id="dialog"></div>
+<div class="grid3cols">
+    <div class="item1" id="meunav">
+        <div class="table99" style="height:600px;">
+            <div class="trow">
+                <div class="tcell h40 f12">Menuitem 1</div>
+            </div>
+            <div class="trow">
+                <div class="tcell h40 f12">Menuitem 2</div>
+            </div>
+            <div class="trow">
+                <div class="tcell h40 f12">Menuitem 3</div>
+            </div>
+            <div class="trow">
+                <div class="tcell h40 f12">Menuitem 4</div>
+            </div>
+        </div>
+    </div>
+    <div class="item2" id="mainContent">
+        <div class="table99" style="height:600px;">
+            <div class="trow">
+                <div class="tcell h40 f12">Content</div>
+            </div>
+        </div>
+    </div>
+    <div class="item3" id="rightinfo">
+        <div class="table99" style="height:600px;">
+            <div class="trow">
+            <div class="tcell h40 f12">Infotainment</div>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="mainContentId" style="width:100%!important;overflow:auto;">
-    <div class="table" style="width:99%!important;margin-left:auto;margin-right:auto;height:50px;">
+    <div class="table99" style="height:50px;">
         <div class="trow">
             <div class="tcell ui-corner-top" style="width:99%!important;text-align:center;border:1px solid lightgrey;">
                 <h2>PTFW - Piwi-Technologies - FrameWork</h2>
             </div>
         </div>
     </div>
-    <div class="table" id="mainViewTableId" style="width:99%!important;margin-left:auto;margin-right:auto;height:620px;overflow:auto;">
+    <div class="table99" id="mainViewTableId" style="height:620px;overflow:auto;">
         <div class="trow">
             <div class="tcell" style="width:100%!important;margin-left:auto;margin-right:auto;">
                 <div id="tabs-centre" style="width:100%!important;margin-left:auto;margin-right:auto;">
